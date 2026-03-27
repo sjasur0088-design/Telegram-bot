@@ -10,19 +10,27 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardMarkup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
+try:
+    from openai import OpenAI
+except Exception:
+    OpenAI = None
+
 logging.basicConfig(level=logging.INFO)
 
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID", "")
 ADMIN_PHONE = os.getenv("ADMIN_PHONE", "+998901234567")
-PRODUCT_DB_PATH = os.getenv("PRODUCT_DB_PATH", "product_db_super.json")
+PRODUCT_DB_PATH = os.getenv("PRODUCT_DB_PATH", "product_db_final_full.json")
 ANALYTICS_DB_PATH = os.getenv("ANALYTICS_DB_PATH", "analytics.db")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN is not set")
 
 bot = Bot(token=BOT_TOKEN, parse_mode="HTML")
 dp = Dispatcher(bot, storage=MemoryStorage())
+client = OpenAI(api_key=OPENAI_API_KEY) if (OPENAI_API_KEY and OpenAI) else None
 
 TXT = {
     "ru": {
@@ -56,7 +64,7 @@ TXT = {
         "source": "Источник",
         "branch_hint": "Если результат не подошёл — нажмите «Специалист».",
         "physical_intro": "Напишите вопрос простыми словами. Я отвечу по правилам для физлиц: лимиты, телефоны, IMEI, авто для личного пользования, декларация, посылки, документы.",
-        "legal_intro": "Напишите товар или вопрос простыми словами. Я покажу 3–4 возможных варианта, если смогу определить направление.",
+        "legal_intro": "Напишите товар или вопрос простыми словами. Я покажу 3–4 возможных варианта. Если подключён OPENAI_API_KEY, помощник дополнительно уточняет ответ по базе.",
         "faq_intro": "Частые вопросы:\n• сколько телефонов можно ввезти\n• лимит через аэропорт\n• IMEI регистрация\n• временный ввоз авто\n• документы для юрлица\n• как определить код ТН ВЭД",
         "docs_physical": "Документы для физлица:\n• паспорт\n• чеки/инвойс при наличии\n• пассажирская декларация при необходимости\n• документы на авто/телефон в нужных случаях",
         "docs_legal": "Документы для юрлица:\n• контракт\n• инвойс\n• упаковочный лист\n• транспортные документы\n• сертификаты/разрешения при необходимости\n• код ТН ВЭД",
@@ -106,7 +114,7 @@ TXT = {
         "source": "Manba",
         "branch_hint": "Natija mos kelmasa — «Mutaxassis» tugmasini bosing.",
         "physical_intro": "Savolni oddiy so‘zlar bilan yozing. Men jismoniy shaxslar uchun yordam beraman: limitlar, telefonlar, IMEI, shaxsiy foydalanish uchun avto, deklaratsiya, posilkalar, hujjatlar.",
-        "legal_intro": "Tovar yoki savolni oddiy so‘zlar bilan yozing. Aniqlashtira olsam, 3–4 variant ko‘rsataman.",
+        "legal_intro": "Tovar yoki savolni oddiy so‘zlar bilan yozing. Men 3–4 variant ko‘rsataman. Agar OPENAI_API_KEY ulangan bo‘lsa, yordamchi bazaga tayanib javobni kuchaytiradi.",
         "faq_intro": "Ko‘p beriladigan savollar:\n• nechta telefon olib kirish mumkin\n• aeroport limiti\n• IMEI ro‘yxatdan o‘tkazish\n• vaqtinchalik auto olib kirish\n• yuridik shaxs hujjatlari\n• TN VED kodini aniqlash",
         "docs_physical": "Jismoniy shaxs uchun hujjatlar:\n• pasport\n• chek/invoys bo‘lsa\n• kerak bo‘lsa yo‘lovchi deklaratsiyasi\n• ayrim holatlarda auto/telefon hujjatlari",
         "docs_legal": "Yuridik shaxs uchun hujjatlar:\n• kontrakt\n• invoys\n• qadoqlash varaqasi\n• transport hujjatlari\n• zarur bo‘lsa sertifikat/ruxsatnomalar\n• TN VED kodi",
@@ -127,14 +135,65 @@ TXT = {
     }
 }
 
-USER_CTX = {}
+USER_CTX: Dict[int, Dict[str, Any]] = {}
 
-def ctx(user_id):
+TREE = {
+    "food": {
+        "label": {"ru": "🫒 Продукты и масла", "uz": "🫒 Oziq-ovqat va moylar"},
+        "groups": {
+            "oil": {
+                "label": {"ru": "🫒 Масла", "uz": "🫒 Moylar"},
+                "positions": {
+                    "sunflower_oil": {"label": {"ru": "🌻 Подсолнечное масло", "uz": "🌻 Kungaboqar moyi"}, "hint": {"ru": "Примеры: подсолнечное масло, рафинированное масло", "uz": "Misollar: kungaboqar moyi, rafinatsiyalangan moy"}}
+                }
+            }
+        }
+    },
+    "medicine": {
+        "label": {"ru": "💊 Медицина", "uz": "💊 Tibbiyot"},
+        "groups": {
+            "drugs": {
+                "label": {"ru": "💊 Лекарства", "uz": "💊 Dori vositalari"},
+                "positions": {
+                    "tablets": {"label": {"ru": "💊 Таблетки", "uz": "💊 Tabletkalar"}, "hint": {"ru": "Примеры: парацетамол, витамины, антибиотики", "uz": "Misollar: paratsetamol, vitaminlar, antibiotiklar"}},
+                    "syrups": {"label": {"ru": "🧴 Сиропы", "uz": "🧴 Sirop"}, "hint": {"ru": "Примеры: сироп от кашля, детский сироп", "uz": "Misollar: yo‘tal siropi, bolalar siropi"}}
+                }
+            }
+        }
+    },
+    "electronics": {
+        "label": {"ru": "📱 Электроника", "uz": "📱 Elektronika"},
+        "groups": {
+            "phones": {
+                "label": {"ru": "📱 Телефоны и звук", "uz": "📱 Telefon va audio"},
+                "positions": {
+                    "smartphones": {"label": {"ru": "📱 Смартфоны", "uz": "📱 Smartfonlar"}, "hint": {"ru": "Примеры: iPhone, Samsung, Redmi", "uz": "Misollar: iPhone, Samsung, Redmi"}},
+                    "speakers": {"label": {"ru": "🔊 Колонки", "uz": "🔊 Kolonkalar"}, "hint": {"ru": "Примеры: компьютерные колонки, bluetooth", "uz": "Misollar: kompyuter kolonkasi, bluetooth"}}
+                }
+            }
+        }
+    },
+    "auto": {
+        "label": {"ru": "🚗 Авто и запчасти", "uz": "🚗 Avto va ehtiyot qismlar"},
+        "groups": {
+            "cars": {
+                "label": {"ru": "🚘 Легковые автомобили", "uz": "🚘 Yengil avtomobillar"},
+                "positions": {
+                    "ev": {"label": {"ru": "⚡ Электромобили", "uz": "⚡ Elektromobillar"}, "hint": {"ru": "Примеры: BYD Song Plus, Tesla", "uz": "Misollar: BYD Song Plus, Tesla"}},
+                    "hybrid": {"label": {"ru": "🔋 Гибриды", "uz": "🔋 Gibridlar"}, "hint": {"ru": "Примеры: гибрид 1.5, Prius", "uz": "Misollar: gibrid 1.5, Prius"}},
+                    "tires": {"label": {"ru": "🛞 Шины", "uz": "🛞 Shinalar"}, "hint": {"ru": "Примеры: автошины, зимние шины", "uz": "Misollar: avtoshina, qishki shina"}}
+                }
+            }
+        }
+    }
+}
+
+def ctx(user_id: int) -> Dict[str, Any]:
     if user_id not in USER_CTX:
         USER_CTX[user_id] = {"lang":"ru","role":None,"mode":None,"category":None,"group":None,"position":None,"pending_form":None,"form_data":{}}
     return USER_CTX[user_id]
 
-def reset_mode(user_id):
+def reset_mode(user_id: int):
     c = ctx(user_id)
     c["mode"] = None
     c["category"] = None
@@ -148,14 +207,14 @@ def db_conn():
     conn.execute("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,username TEXT,lang TEXT,role TEXT,event_type TEXT,event_value TEXT,created_at TEXT)")
     return conn
 
-def track(user_id, username, lang, role, event_type, event_value=""):
+def track(user_id: int, username: str, lang: str, role: str, event_type: str, event_value: str = ""):
     conn = db_conn()
     conn.execute("INSERT INTO events (user_id, username, lang, role, event_type, event_value, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
                  (user_id, username or "", lang or "", role or "", event_type, event_value, datetime.utcnow().isoformat()))
     conn.commit()
     conn.close()
 
-def analytics_text(lang):
+def analytics_text(lang: str) -> str:
     conn = db_conn()
     cur = conn.cursor()
     cur.execute("SELECT COUNT(DISTINCT user_id) FROM events")
@@ -185,21 +244,22 @@ def analytics_text(lang):
             lines.append(f"• {code}: {count}")
     return "\n".join(lines)
 
-TREE = {
-    "medicine":{"label":{"ru":"💊 Медицина","uz":"💊 Tibbiyot"},"groups":{"drugs":{"label":{"ru":"💊 Лекарства","uz":"💊 Dori vositalari"},"positions":{"tablets":{"label":{"ru":"💊 Таблетки","uz":"💊 Tabletkalar"},"hint":{"ru":"Примеры: парацетамол, витамины, антибиотики","uz":"Misollar: paratsetamol, vitaminlar, antibiotiklar"}},"syrups":{"label":{"ru":"🧴 Сиропы","uz":"🧴 Sirop"},"hint":{"ru":"Примеры: сироп от кашля, детский сироп","uz":"Misollar: yo‘tal siropi, bolalar siropi"}}}}}},
-    "electronics":{"label":{"ru":"📱 Электроника","uz":"📱 Elektronika"},"groups":{"phones":{"label":{"ru":"📱 Телефоны","uz":"📱 Telefonlar"},"positions":{"smartphones":{"label":{"ru":"📱 Смартфоны","uz":"📱 Smartfonlar"},"hint":{"ru":"Примеры: iPhone, Samsung, Redmi","uz":"Misollar: iPhone, Samsung, Redmi"}},"speakers":{"label":{"ru":"🔊 Колонки","uz":"🔊 Kolonkalar"},"hint":{"ru":"Примеры: компьютерные колонки, bluetooth","uz":"Misollar: kompyuter kolonkasi, bluetooth"}}}}}},
-    "auto":{"label":{"ru":"🚗 Авто и запчасти","uz":"🚗 Avto va ehtiyot qismlar"},"groups":{"cars":{"label":{"ru":"🚘 Легковые автомобили","uz":"🚘 Yengil avtomobillar"},"positions":{"ev":{"label":{"ru":"⚡ Электромобили","uz":"⚡ Elektromobillar"},"hint":{"ru":"Примеры: BYD Song Plus, Tesla","uz":"Misollar: BYD Song Plus, Tesla"}},"hybrid":{"label":{"ru":"🔋 Гибриды","uz":"🔋 Gibridlar"},"hint":{"ru":"Примеры: гибрид 1.5, Prius","uz":"Misollar: gibrid 1.5, Prius"}},"tires":{"label":{"ru":"🛞 Шины","uz":"🛞 Shinalar"},"hint":{"ru":"Примеры: автошины, зимние шины","uz":"Misollar: avtoshina, qishki shina"}}}}}},
-    "food":{"label":{"ru":"🫒 Продукты и масла","uz":"🫒 Oziq-ovqat va moylar"},"groups":{"oil":{"label":{"ru":"🫒 Масла","uz":"🫒 Moylar"},"positions":{"sunflower_oil":{"label":{"ru":"🌻 Подсолнечное масло","uz":"🌻 Kungaboqar moyi"},"hint":{"ru":"Примеры: подсолнечное масло, рафинированное масло","uz":"Misollar: kungaboqar moyi, rafinatsiyalangan moy"}}}}}}
-}
-
-def load_db():
+def load_db() -> Dict[str, Dict[str, Any]]:
     if os.path.exists(PRODUCT_DB_PATH):
         with open(PRODUCT_DB_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+            fixed = {}
+            for k, v in data.items():
+                key = "".join(ch for ch in str(k) if ch.isdigit())
+                if not key:
+                    continue
+                fixed[key] = dict(v)
+            return fixed
     return {}
+
 PRODUCT_DB = load_db()
 
-def t(lang, key):
+def t(lang: str, key: str) -> str:
     return TXT.get(lang, TXT["ru"]).get(key, key)
 
 def build_lang_kb():
@@ -207,20 +267,20 @@ def build_lang_kb():
     kb.add("Русский", "O'zbekcha")
     return kb
 
-def role_kb(lang):
+def role_kb(lang: str):
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(t(lang, "role_physical"), t(lang, "role_legal"))
     kb.add(t(lang, "role_broker"))
     return kb
 
-def physical_menu(lang):
+def physical_menu(lang: str):
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(t(lang, "chat"), t(lang, "faq"))
     kb.add(t(lang, "docs"), t(lang, "specialist"))
     kb.add(t(lang, "change"))
     return kb
 
-def legal_menu(lang):
+def legal_menu(lang: str):
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(t(lang, "tnved"), t(lang, "exact"))
     kb.add(t(lang, "chat"), t(lang, "docs"))
@@ -228,46 +288,46 @@ def legal_menu(lang):
     kb.add("📊 Analytics", t(lang, "change"))
     return kb
 
-def broker_menu(lang):
+def broker_menu(lang: str):
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(t(lang, "broker_cost"))
     kb.add(t(lang, "back_menu"))
     return kb
 
-def broker_cost_menu(lang):
+def broker_cost_menu(lang: str):
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     kb.add(t(lang, "broker_min_avg"), t(lang, "broker_3m"))
     kb.add(t(lang, "back_menu"))
     return kb
 
-def category_kb(lang):
+def category_kb(lang: str):
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     for cat in TREE.values():
         kb.add(cat["label"][lang])
     kb.add(t(lang, "back_menu"))
     return kb
 
-def group_kb(lang, category_id):
+def group_kb(lang: str, category_id: str):
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     for group in TREE[category_id]["groups"].values():
         kb.add(group["label"][lang])
     kb.add(t(lang, "back"), t(lang, "back_menu"))
     return kb
 
-def position_kb(lang, category_id, group_id):
+def position_kb(lang: str, category_id: str, group_id: str):
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     for pos in TREE[category_id]["groups"][group_id]["positions"].values():
         kb.add(pos["label"][lang])
     kb.add(t(lang, "back"), t(lang, "back_menu"))
     return kb
 
-def normalize_code(value):
+def normalize_code(value: str) -> str:
     return "".join(ch for ch in str(value) if ch.isdigit())
 
-def normalize_text(value):
+def normalize_text(value: str) -> str:
     return re.sub(r"\s+", " ", value.strip().lower())
 
-def find_ids_by_label(lang, label):
+def find_ids_by_label(lang: str, label: str):
     for cat_id, cat in TREE.items():
         if cat["label"][lang] == label:
             return ("category", cat_id)
@@ -279,11 +339,19 @@ def find_ids_by_label(lang, label):
                     return ("position", cat_id, group_id, pos_id)
     return None
 
-def format_item(item, lang, idx):
-    name = item.get("name_ru") if lang == "ru" else item.get("name_uz")
-    return f"{idx}) <b>{name}</b>\nКод: <code>{item.get('code','')}</code>\nПошлина: {item.get('duty','уточнить')}\nНДС: {item.get('vat','12%')}\nАкциз: {item.get('excise','нет')}\n♻️ Утильсбор: {item.get('util','нет')}\n{t(lang, 'source')}: {item.get('source','локальная база')}\n"
+def format_item(item: Dict[str, Any], lang: str, idx: int) -> str:
+    name = item.get("name_ru") if lang == "ru" else item.get("name_uz", item.get("name_ru"))
+    return (
+        f"{idx}) <b>{name}</b>\n"
+        f"Код: <code>{item.get('code','')}</code>\n"
+        f"Пошлина: {item.get('duty','уточнить')}\n"
+        f"НДС: {item.get('vat','12%')}\n"
+        f"Акциз: {item.get('excise','нет')}\n"
+        f"♻️ Утильсбор: {item.get('util','нет')}\n"
+        f"{t(lang, 'source')}: {item.get('source_main','локальная база')}\n"
+    )
 
-def find_by_code(code):
+def find_by_code(code: str) -> List[Dict[str, Any]]:
     code = normalize_code(code)
     if not code:
         return []
@@ -296,13 +364,24 @@ def find_by_code(code):
     if pref:
         pref = sorted(pref, key=lambda x: len(normalize_code(x.get("code", ""))))
         return pref[:4]
+    for size in [8, 6, 4]:
+        if len(code) >= size:
+            part = code[:size]
+            hits = [v for k, v in PRODUCT_DB.items() if normalize_code(k).startswith(part)]
+            if hits:
+                hits = sorted(hits, key=lambda x: len(normalize_code(x.get("code", ""))))
+                return hits[:4]
     return []
 
-def search_branch(query, category, group, position):
+def search_branch(query: str, category: str, group: str, position: str) -> List[Dict[str, Any]]:
     q = normalize_text(query)
     strict, grp, cat, other = [], [], [], []
     for item in PRODUCT_DB.values():
-        hay = " ".join([normalize_text(item.get("name_ru","")), normalize_text(item.get("name_uz",""))] + [normalize_text(x) for x in item.get("examples", [])])
+        hay = " ".join([
+            normalize_text(item.get("name_ru", "")),
+            normalize_text(item.get("name_uz", "")),
+            *[normalize_text(x) for x in item.get("examples", [])]
+        ])
         if q not in hay:
             continue
         if item.get("category") == category and item.get("group") == group and item.get("position") == position:
@@ -315,15 +394,59 @@ def search_branch(query, category, group, position):
             other.append(item)
     return (strict or grp or cat or other)[:4]
 
-def physical_answer(query, lang):
+def local_search(query: str) -> List[Dict[str, Any]]:
+    q = normalize_text(query)
+    hits = []
+    for item in PRODUCT_DB.values():
+        hay = " ".join([
+            normalize_text(item.get("name_ru", "")),
+            normalize_text(item.get("name_uz", "")),
+            *[normalize_text(x) for x in item.get("examples", [])]
+        ])
+        if q and q in hay:
+            hits.append(item)
+    return hits[:4]
+
+def ai_enhance_answer(query: str, items: List[Dict[str, Any]], lang: str, role: str) -> str:
+    if not client or not items:
+        return ""
+    try:
+        facts = []
+        for item in items[:4]:
+            facts.append({
+                "code": item.get("code"),
+                "name_ru": item.get("name_ru"),
+                "name_uz": item.get("name_uz"),
+                "duty": item.get("duty"),
+                "vat": item.get("vat"),
+                "excise": item.get("excise"),
+                "util": item.get("util")
+            })
+        prompt = f"""Ответь кратко и только на основе фактов из JSON. Не придумывай новые коды и ставки.
+Язык ответа: {'русский' if lang=='ru' else 'узбекский'}.
+Режим: {role}.
+Запрос пользователя: {query}
+Данные: {json.dumps(facts, ensure_ascii=False)}
+Нужно:
+1) коротко объяснить, какие 1-3 варианта наиболее подходят,
+2) указать если нужна ручная проверка,
+3) без таблиц."""
+        resp = client.responses.create(model=OPENAI_MODEL, input=prompt)
+        return getattr(resp, "output_text", "").strip()
+    except Exception:
+        return ""
+
+def physical_answer(query: str, lang: str) -> str:
     q = normalize_text(query)
     if any(x in q for x in ["телефон", "iphone", "смартфон", "phone"]):
         return "Для физлица важны лимит, личное пользование и IMEI-регистрация." if lang == "ru" else "Jismoniy shaxs uchun limit, shaxsiy foydalanish va IMEI ro‘yxatdan o‘tkazish muhim."
     if any(x in q for x in ["авто", "машин", "byd", "tesla", "gibrid", "электро", "mashina", "avto"]):
         return "Для физлица по авто важны тип, возраст, объём двигателя, документы и цель ввоза." if lang == "ru" else "Jismoniy shaxs uchun avto bo‘yicha turi, yoshi, dvigatel hajmi, hujjatlar va olib kirish maqsadi muhim."
+    if any(x in q for x in ["валют", "доллар", "tilla", "oltin"]):
+        return "Для физлица по валюте действуют отдельные правила декларирования." if lang == "ru" else "Jismoniy shaxslar uchun valyuta bo‘yicha alohida deklaratsiya qoidalari bor."
     return t(lang, "physical_no_calc")
 
-async def send_main_menu(message, user_id):
+async def send_main_menu(message: types.Message, user_id: int):
     c = ctx(user_id)
     lang = c["lang"]
     role = c["role"]
@@ -340,23 +463,23 @@ async def send_main_menu(message, user_id):
         await message.answer(t(lang, "choose_role"), reply_markup=role_kb(lang))
 
 @dp.message_handler(commands=["start"])
-async def start_cmd(message):
+async def start_cmd(message: types.Message):
     USER_CTX[message.from_user.id] = {"lang":"ru","role":None,"mode":"choose_lang","category":None,"group":None,"position":None,"pending_form":None,"form_data":{}}
     track(message.from_user.id, message.from_user.username or "", "ru", "", "button", "/start")
     await message.answer(TXT["ru"]["choose_lang"], reply_markup=build_lang_kb())
 
 @dp.message_handler(commands=["myid"])
-async def myid_cmd(message):
+async def myid_cmd(message: types.Message):
     await message.answer(f"Ваш ID: <code>{message.from_user.id}</code>")
 
 @dp.message_handler(commands=["analytics", "stats"])
-async def analytics_cmd(message):
+async def analytics_cmd(message: types.Message):
     if ADMIN_CHAT_ID and str(message.from_user.id) != str(ADMIN_CHAT_ID):
         return
     await message.answer(analytics_text(ctx(message.from_user.id)["lang"]))
 
 @dp.message_handler(content_types=types.ContentTypes.TEXT)
-async def router(message):
+async def router(message: types.Message):
     user_id = message.from_user.id
     username = message.from_user.username or ""
     c = ctx(user_id)
@@ -483,6 +606,9 @@ async def router(message):
         out = f"<b>{t(lang, 'possible')}</b>\n\n"
         for i, item in enumerate(results, 1):
             out += format_item(item, lang, i) + "\n"
+        ai_text = ai_enhance_answer(text, results, lang, "legal")
+        if ai_text:
+            out += "\n<b>AI:</b>\n" + ai_text + "\n"
         out += t(lang, "branch_hint")
         await message.answer(out, reply_markup=legal_menu(lang)); return
 
@@ -494,25 +620,45 @@ async def router(message):
         out = f"<b>{t(lang, 'code_result')}</b>\n\n"
         for i, item in enumerate(results, 1):
             out += format_item(item, lang, i) + "\n"
+        ai_text = ai_enhance_answer(text, results, lang, "legal")
+        if ai_text:
+            out += "\n<b>AI:</b>\n" + ai_text
         await message.answer(out, reply_markup=legal_menu(lang)); return
 
     if c["mode"] == "legal_chat":
-        q = normalize_text(text)
-        results = []
-        for item in PRODUCT_DB.values():
-            hay = " ".join([normalize_text(item.get("name_ru","")), normalize_text(item.get("name_uz",""))] + [normalize_text(x) for x in item.get("examples", [])])
-            if q and q in hay:
-                results.append(item)
+        results = local_search(text)
         if not results:
-            await message.answer(t(lang, "nothing_found"), reply_markup=legal_menu(lang)); return
+            if client:
+                try:
+                    prompt = f"Ответь кратко на {('русском' if lang=='ru' else 'узбекском')} языке. Если информации недостаточно, честно скажи это. Запрос: {text}"
+                    resp = client.responses.create(model=OPENAI_MODEL, input=prompt)
+                    await message.answer((resp.output_text or "").strip() or t(lang, "nothing_found"), reply_markup=legal_menu(lang))
+                except Exception:
+                    await message.answer(t(lang, "nothing_found"), reply_markup=legal_menu(lang))
+            else:
+                await message.answer(t(lang, "nothing_found"), reply_markup=legal_menu(lang))
+            return
         out = f"<b>{t(lang, 'possible')}</b>\n\n"
         for i, item in enumerate(results[:4], 1):
             out += format_item(item, lang, i) + "\n"
+        ai_text = ai_enhance_answer(text, results, lang, "legal")
+        if ai_text:
+            out += "\n<b>AI:</b>\n" + ai_text + "\n"
         out += t(lang, "branch_hint")
         await message.answer(out, reply_markup=legal_menu(lang)); return
 
     if c["mode"] == "physical_chat":
-        await message.answer(physical_answer(text, lang), reply_markup=physical_menu(lang)); return
+        if client:
+            try:
+                prompt = f"Ответь кратко на {('русском' if lang=='ru' else 'узбекском')} языке как помощник по физлицам по таможенным правилам Узбекистана. Не давай брокерские ставки по умолчанию. Если не уверен — посоветуй специалиста. Запрос: {text}"
+                resp = client.responses.create(model=OPENAI_MODEL, input=prompt)
+                answer = (resp.output_text or "").strip()
+                await message.answer(answer or physical_answer(text, lang), reply_markup=physical_menu(lang))
+            except Exception:
+                await message.answer(physical_answer(text, lang), reply_markup=physical_menu(lang))
+        else:
+            await message.answer(physical_answer(text, lang), reply_markup=physical_menu(lang))
+        return
 
     if c["pending_form"] == "specialist_name":
         c["form_data"]["name"] = text
