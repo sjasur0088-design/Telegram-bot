@@ -1,0 +1,179 @@
+{
+  "1512": {
+    "code": "1512",
+    "name_ru": "Масло подсолнечное, сафлоровое или хлопковое и их фракции",
+    "name_uz": "Kungaboqar, safsar yoki paxta moyi va ularning fraksiyalari",
+    "category": "food",
+    "group": "oil",
+    "position": "sunflower_oil",
+    "examples": [
+      "подсолнечное масло",
+      "масло растительное"
+    ],
+    "duty": "5%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "нет",
+    "source": "ПҚ-3818"
+  },
+  "1512199002": {
+    "code": "1512199002",
+    "name_ru": "Подсолнечное масло, прочее",
+    "name_uz": "Kungaboqar moyi, boshqa",
+    "category": "food",
+    "group": "oil",
+    "position": "sunflower_oil",
+    "examples": [
+      "подсолнечное масло",
+      "рафинированное масло"
+    ],
+    "duty": "5%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "нет",
+    "source": "ПҚ-3818"
+  },
+  "3004900000": {
+    "code": "3004900000",
+    "name_ru": "Лекарственные средства прочие, в дозированных формах",
+    "name_uz": "Dozalangan shakldagi boshqa dori vositalari",
+    "category": "medicine",
+    "group": "drugs",
+    "position": "tablets",
+    "examples": [
+      "таблетки",
+      "витамины",
+      "парацетамол"
+    ],
+    "duty": "0%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "нет",
+    "source": "ПҚ-3818"
+  },
+  "3004500000": {
+    "code": "3004500000",
+    "name_ru": "Лекарственные средства, содержащие витамины",
+    "name_uz": "Vitamin saqlovchi dori vositalari",
+    "category": "medicine",
+    "group": "drugs",
+    "position": "tablets",
+    "examples": [
+      "витамины",
+      "витамин C",
+      "таблетки с витаминами"
+    ],
+    "duty": "0%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "нет",
+    "source": "ПҚ-3818"
+  },
+  "3004100000": {
+    "code": "3004100000",
+    "name_ru": "Лекарственные средства, содержащие пенициллины или их производные",
+    "name_uz": "Penitsillin yoki hosilalarini saqlovchi dori vositalari",
+    "category": "medicine",
+    "group": "drugs",
+    "position": "tablets",
+    "examples": [
+      "антибиотики",
+      "таблетки антибиотики"
+    ],
+    "duty": "0%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "нет",
+    "source": "ПҚ-3818"
+  },
+  "8517130000": {
+    "code": "8517130000",
+    "name_ru": "Смартфоны",
+    "name_uz": "Smartfonlar",
+    "category": "electronics",
+    "group": "phones",
+    "position": "smartphones",
+    "examples": [
+      "смартфон",
+      "iphone",
+      "samsung"
+    ],
+    "duty": "0%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "нет",
+    "source": "ПҚ-3818"
+  },
+  "8518210000": {
+    "code": "8518210000",
+    "name_ru": "Одиночные громкоговорители в корпусе",
+    "name_uz": "Korpusdagi yakka karnaylar",
+    "category": "electronics",
+    "group": "phones",
+    "position": "speakers",
+    "examples": [
+      "колонки",
+      "громкоговоритель",
+      "компьютерные колонки"
+    ],
+    "duty": "15%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "нет",
+    "source": "ПҚ-3818"
+  },
+  "8703800001": {
+    "code": "8703800001",
+    "name_ru": "Электромобили",
+    "name_uz": "Elektromobillar",
+    "category": "auto",
+    "group": "cars",
+    "position": "ev",
+    "examples": [
+      "электромобиль",
+      "byd song plus",
+      "tesla"
+    ],
+    "duty": "0%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "120 БРВ (до 3 лет) / 210 БРВ (старше 3 лет)",
+    "source": "ПҚ-3818 + ПКМ-347"
+  },
+  "8703400000": {
+    "code": "8703400000",
+    "name_ru": "Гибридные легковые автомобили",
+    "name_uz": "Gibrid yengil avtomobillar",
+    "category": "auto",
+    "group": "cars",
+    "position": "hybrid",
+    "examples": [
+      "гибрид",
+      "гибрид 1.5",
+      "prius"
+    ],
+    "duty": "15%",
+    "vat": "12%",
+    "excise": "нет / уточнить по модели",
+    "util": "по ПКМ-347 зависит от объема и возраста",
+    "source": "ПҚ-3818 + ПКМ-347"
+  },
+  "4011100000": {
+    "code": "4011100000",
+    "name_ru": "Шины новые резиновые для легковых автомобилей",
+    "name_uz": "Yengil avtomobillar uchun yangi rezina shinalar",
+    "category": "auto",
+    "group": "cars",
+    "position": "tires",
+    "examples": [
+      "шины",
+      "автошины",
+      "зимние шины"
+    ],
+    "duty": "20%",
+    "vat": "12%",
+    "excise": "нет",
+    "util": "может применяться по отдельным правилам",
+    "source": "ПҚ-3818"
+  }
+}
