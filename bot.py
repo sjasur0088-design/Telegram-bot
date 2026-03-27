@@ -1193,6 +1193,40 @@ with open(PRODUCT_DB_PATH, "r", encoding="utf-8") as f:
     RECORDS = json.load(f)
 print(f"Loaded records: {len(RECORDS)}")
 
+# hard aliases for common user words
+RECORDS.extend([
+    {
+        "id": "manual_alias_1512_oil",
+        "record_kind": "alias",
+        "code": "1512",
+        "alias": "растительное масло",
+        "name_ru": "Растительное масло - шаблон поиска",
+        "name_uz": "O‘simlik moyi - qidiruv shabloni",
+        "category": "food",
+        "duty": "5-15% / уточнить по подгруппе",
+        "vat": "12%",
+        "excise": "нет / проверять отдельно",
+        "util": "нет / проверять отдельно",
+        "examples": ["растительное масло", "подсолнечное масло", "масло"],
+        "source_main": "ПП-3818 / шаблон"
+    },
+    {
+        "id": "manual_alias_2402_cigarettes",
+        "record_kind": "alias",
+        "code": "2402",
+        "alias": "сигареты",
+        "name_ru": "Сигареты - шаблон поиска",
+        "name_uz": "Sigaretalar - qidiruv shabloni",
+        "category": "tobacco",
+        "duty": "30% / уточнить по виду",
+        "vat": "12%",
+        "excise": "по НК: табак/сигареты/вейп — проверить вид и ставку",
+        "util": "нет / проверять отдельно",
+        "examples": ["сигареты", "табак", "табачные изделия"],
+        "source_main": "ПП-3818 / шаблон"
+    }
+])
+
 def dedupe(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     seen = set(); out = []
     for item in items:
@@ -1205,11 +1239,39 @@ def dedupe(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 def code_search(code: str) -> List[Dict[str, Any]]:
     n = normalize_code(code)
-    exact = [r for r in RECORDS if normalize_code(r.get("code","")) == n and r.get("record_kind") == "exact"]
+    if not n:
+        return []
+
+    # 1) exact code
+    exact = [
+        r for r in RECORDS
+        if normalize_code(r.get("code","")) == n
+        and r.get("record_kind") == "exact"
+    ]
     if exact:
         return dedupe(exact)[:6]
-    pref = [r for r in RECORDS if normalize_code(r.get("code","")).startswith(n) and r.get("record_kind") in ("exact","prefix")]
-    return dedupe(pref)[:6]
+
+    # 2) any prefix match across all record kinds
+    prefix = [
+        r for r in RECORDS
+        if normalize_code(r.get("code","")).startswith(n)
+    ]
+    if prefix:
+        return dedupe(prefix)[:6]
+
+    # 3) fallback by shortened code family
+    for size in (8, 6, 4, 2):
+        p = n[:size]
+        if not p:
+            continue
+        prefix = [
+            r for r in RECORDS
+            if normalize_code(r.get("code","")).startswith(p)
+        ]
+        if prefix:
+            return dedupe(prefix)[:6]
+
+    return []
 
 def text_search(query: str, category: str = None) -> List[Dict[str, Any]]:
     q = normalize_text(query)
@@ -1419,9 +1481,23 @@ async def router(message: types.Message):
                 hits = code_search(code)
                 if hits:
                     results.extend(hits)
+
             results = dedupe(results)[:6]
+
+            # fallback 1: search by selected title inside chosen category
             if not results and selected_title:
                 results = text_search(selected_title, c["category"])
+
+            # fallback 2: search by selected title globally
+            if not results and selected_title:
+                results = text_search(selected_title)
+
+            # fallback 3: search by each code as text
+            if not results:
+                for code in selected_codes:
+                    results.extend(text_search(code, c["category"]))
+                results = dedupe(results)[:6]
+
             if not results:
                 await message.answer(t(lang, "nothing_found"), reply_markup=legal_menu(lang))
                 return
