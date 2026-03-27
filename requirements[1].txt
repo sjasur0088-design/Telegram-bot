@@ -2,4 +2,3 @@ aiogram==2.25.1
 python-dotenv
 requests
 openai
-openpyxl
