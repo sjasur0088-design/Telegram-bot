@@ -27,6 +27,8 @@ print("OPENAI_API_KEY:", "OK" if OPENAI_API_KEY else "NOT SET")
 print("OPENAI_MODEL:", OPENAI_MODEL)
 print("=================\n")
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN is not set")
 
@@ -1198,7 +1200,9 @@ DB_FILES = [
 
 RECORDS = []
 for db_file in DB_FILES:
-    with open(db_file, "r", encoding="utf-8") as f:
+    db_path = os.path.join(BASE_DIR, db_file)
+    print(f"Loading DB file: {db_path}")
+    with open(db_path, "r", encoding="utf-8") as f:
         RECORDS.extend(json.load(f))
 
 print(f"Loaded records: {len(RECORDS)}")
