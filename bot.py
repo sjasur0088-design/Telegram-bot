@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 
 BOT_TOKEN = os.getenv("BOT_TOKEN", "").strip()
 ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID", "").strip()
-PRODUCT_DB_PATH = os.getenv("PRODUCT_DB_PATH", "product_db_1500_plus.json")
+PRODUCT_DB_PATH = os.getenv("PRODUCT_DB_PATH", "product_db_pp181_real.json")
 ANALYTICS_DB_PATH = os.getenv("ANALYTICS_DB_PATH", "analytics.db")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
@@ -60,7 +60,7 @@ TXT = {
         "pick_category":"Выберите категорию:",
         "pick_group":"Выберите группу:",
         "pick_item":"Выберите вариант:",
-        "enter_code":"Введите код ТН ВЭД: 4, 6, 8 или 10 цифр.",
+        "enter_code":"Введите код ТН ВЭД. Если введёте 4 цифры, я покажу все найденные варианты по этому префиксу.",
         "nothing_found":"Ничего подходящего не найдено. Попробуйте другой товар или нажмите «Специалист».",
         "possible":"Возможные варианты:",
         "code_result":"Результат по коду",
@@ -109,7 +109,7 @@ TXT = {
         "pick_category":"Kategoriyani tanlang:",
         "pick_group":"Guruhni tanlang:",
         "pick_item":"Variantni tanlang:",
-        "enter_code":"TN VED kodini kiriting: 4, 6, 8 yoki 10 ta raqam.",
+        "enter_code":"TN VED kodini kiriting. Agar 4 ta raqam kiritsangiz, shu prefiks bo‘yicha barcha variantlarni ko‘rsataman.",
         "nothing_found":"Mos natija topilmadi. Boshqa tovarni yozing yoki «Mutaxassis» tugmasini bosing.",
         "possible":"Mumkin bo‘lgan variantlar:",
         "code_result":"Kod bo‘yicha natija",
@@ -1292,15 +1292,57 @@ def text_search(query: str, category: str = None) -> List[Dict[str, Any]]:
 
 def format_item(item: Dict[str, Any], lang: str, idx: int) -> str:
     name = item.get("name_ru") if lang == "ru" else item.get("name_uz", item.get("name_ru"))
-    return (
-        f"{idx}) <b>{name}</b>\n"
-        f"Код: <code>{item.get('code','')}</code>\n"
-        f"Пошлина: {item.get('duty','уточнить')}\n"
-        f"НДС: {item.get('vat','12%')}\n"
-        f"Акциз: {item.get('excise','нет')}\n"
-        f"♻️ Утильсбор: {item.get('util','нет')}\n"
-        f"{t(lang, 'source')}: {item.get('source_main','локальная база')}\n"
+    code_label = "Код" if lang == "ru" else "Kod"
+    duty_label = "Пошлина" if lang == "ru" else "Boj"
+    vat_label = "НДС" if lang == "ru" else "QQS"
+    excise_label = "Акциз" if lang == "ru" else "Aksiz"
+    util_label = "♻️ Утильсбор" if lang == "ru" else "♻️ Util yig‘imi"
+
+    base = (
+        f"{idx}) <b>{name}</b>
+"
+        f"{code_label}: <code>{item.get('code','')}</code>
+"
+        f"{duty_label}: {item.get('duty','уточнить')}
+"
+        f"{vat_label}: {item.get('vat','12%')}
+"
+        f"{excise_label}: {item.get('excise','нет')}
+"
+        f"{util_label}: {item.get('util','нет')}
+"
+        f"{t(lang, 'source')}: {item.get('source_main','локальная база')}
+"
     )
+
+    if lang == "ru":
+        warning = (
+            "
+⚠️ Ставки могут изменяться:
+"
+            "• при наличии сертификата происхождения
+"
+            "• в зависимости от страны отправления
+
+"
+            "📌 Для точного расчёта уточните у специалиста
+"
+        )
+    else:
+        warning = (
+            "
+⚠️ Stavkalar o‘zgarishi mumkin:
+"
+            "• kelib chiqish sertifikati mavjud bo‘lsa
+"
+            "• jo‘natilgan davlatga qarab
+
+"
+            "📌 Aniq hisob-kitob uchun mutaxassisga murojaat qiling
+"
+        )
+
+    return base + warning
 
 def ai_hint(query: str, items: List[Dict[str, Any]], lang: str) -> str:
     if not client or not items:
@@ -1382,11 +1424,15 @@ async def router(message: types.Message):
         return
 
     if text == t(lang, "back_menu"):
+        if c.get("role") == "broker":
+            reset_mode(uid)
+            await message.answer(t(lang, "broker_intro"), reply_markup=broker_menu(lang))
+            return
         await send_main_menu(message, uid)
         return
 
     if text == t(lang, "back"):
-        if c["role"] == "broker":
+        if c.get("role") == "broker":
             reset_mode(uid)
             await message.answer(t(lang, "broker_intro"), reply_markup=broker_menu(lang))
             return
@@ -1526,9 +1572,48 @@ async def router(message: types.Message):
         return
 
     if c["mode"] == "exact_code":
-        items = code_search(text); track(uid, username, lang, role or "", "code_search", normalize_code(text))
+        query_code = normalize_code(text)
+        items = code_search(text)
+        track(uid, username, lang, role or "", "code_search", query_code)
+
         if not items:
-            await message.answer(t(lang, "nothing_found"), reply_markup=legal_menu(lang)); return
+            await message.answer(t(lang, "nothing_found"), reply_markup=legal_menu(lang))
+            return
+
+        # If user entered 4 digits, prefer showing all matching variants for this prefix.
+        if len(query_code) == 4:
+            variants = [
+                r for r in RECORDS
+                if normalize_code(r.get("code", "")).startswith(query_code)
+                and r.get("record_kind") == "exact"
+            ]
+            variants = dedupe(variants)
+
+            if variants:
+                out = f"<b>{t(lang, 'possible')}</b>\n\n"
+                for i, item in enumerate(variants[:20], 1):
+                    out += format_item(item, lang, i) + "\n"
+
+                if len(variants) > 20:
+                    out += f"\n... и ещё {len(variants) - 20} вариантов по префиксу <code>{query_code}</code>.\n"
+
+                hint = ai_hint(text, variants[:6], lang)
+                if hint:
+                    out += "\n<b>AI:</b>\n" + hint + "\n"
+
+                out += t(lang, "branch_hint")
+                await message.answer(out, reply_markup=legal_menu(lang))
+                return
+
+            # fallback: if no exact variants inside 4-digit prefix, show first matching family result
+            first_variant = items[:1]
+            out = f"<b>{t(lang, 'code_result')}</b>\n\n"
+            for i, item in enumerate(first_variant, 1):
+                out += format_item(item, lang, i) + "\n"
+            out += "\nПоказан первый вариант для 4-значного кода. Для точности лучше введите 6/8/10 цифр."
+            await message.answer(out, reply_markup=legal_menu(lang))
+            return
+
         out = f"<b>{t(lang, 'code_result')}</b>\n\n"
         for i, item in enumerate(items, 1):
             out += format_item(item, lang, i) + "\n"
