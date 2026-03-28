@@ -1,3 +1,4 @@
+print("=== FINAL BOT VERSION ===")
 import os
 import re
 import json
