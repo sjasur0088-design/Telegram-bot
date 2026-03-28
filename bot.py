@@ -1,4 +1,3 @@
-update bot to final version
 import os
 import re
 import json
