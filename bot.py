@@ -1,3 +1,4 @@
+print("=== BOT TEST 777 ===")
 import os
 import re
 import json
@@ -796,7 +797,7 @@ async def cmd_start(message: types.Message):
     ctx["mode"] = None
     ctx["pending_form"] = None
     ctx["form_data"] = {}
-    await message.answer(TXT["ru"]["choose_lang"], reply_markup=lang_kb())
+    await message.answer("TEST 777")
 
 
 @dp.message_handler(commands=["admin"])
