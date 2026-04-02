@@ -1,0 +1,319 @@
+{
+  "ru": [
+    {
+      "id": "entry_general",
+      "title": "Таможенные правила для физических лиц, въезжающих на территорию Республики Узбекистан",
+      "keywords": [
+        "въезд",
+        "ввоз",
+        "въезжаю",
+        "прилетаю",
+        "приезжаю",
+        "аэропорт",
+        "граница",
+        "дубай",
+        "из дубая",
+        "привезти",
+        "в ручной клади"
+      ],
+      "answer": "Если вы въезжаете в Республику Узбекистан, важно помнить о беспошлинных лимитах для личного пользования: через международные аэропорты — до 2 000 долларов США, через железнодорожные и речные пункты — до 1 000 долларов США, через автодорожные и пешеходные пункты — до 300 долларов США. Если вы укладываетесь в эти нормы, пассажирскую таможенную декларацию обычно подавать не требуется.",
+      "follow_up": "Напишите, пожалуйста: через что вы въезжаете — аэропорт, авто, поезд или пешком, и какой товар везёте. Я объясню по вашей ситуации простыми словами.",
+      "source": "ПП-3512 / предоставленный пользователем текст"
+    },
+    {
+      "id": "exit_general",
+      "title": "Таможенные правила для физических лиц, выезжающих с территории Республики Узбекистан",
+      "keywords": [
+        "выезд",
+        "вывоз",
+        "вылетаю",
+        "улетаю",
+        "покидаю узбекистан",
+        "вывезти",
+        "из узбекистана"
+      ],
+      "answer": "Если вы выезжаете из Республики Узбекистан, физическим лицам разрешается вывозить товары общей стоимостью не более 5 000 долларов США без подачи таможенной декларации. Но для отдельных категорий товаров действуют специальные ограничения и по некоторым товарам нужны разрешения компетентных органов.",
+      "follow_up": "Напишите, пожалуйста, что именно вы вывозите: продукты, валюту или другой товар. Я подскажу именно по вашему случаю.",
+      "source": "ПП-3512 / предоставленный пользователем текст"
+    },
+    {
+      "id": "entry_limits_transport",
+      "title": "Сколько можно ввозить без пошлины",
+      "keywords": [
+        "без пошлины",
+        "лимит",
+        "сколько можно",
+        "беспошлинно",
+        "до 2000",
+        "до 1000",
+        "до 300"
+      ],
+      "answer": "Для физлиц при некоммерческом ввозе действуют такие лимиты: через аэропорт — до 2 000 долларов США, через железнодорожные и речные пункты — до 1 000 долларов США, через автодорожные и пешеходные пункты — до 300 долларов США. Эти лимиты относятся к товарам для личного пользования, а не для продажи.",
+      "follow_up": "Если хотите, напишите, через какой пункт вы пересекаете границу и что именно везёте. Я скажу, попадаете ли вы в лимит.",
+      "source": "ПП-3512 / предоставленный пользователем текст"
+    },
+    {
+      "id": "entry_special_norms",
+      "title": "Какие есть отдельные нормы по алкоголю, сигаретам, духам и украшениям",
+      "keywords": [
+        "алкоголь",
+        "сигареты",
+        "табак",
+        "духи",
+        "туалетная вода",
+        "ювелир",
+        "украшения",
+        "золото"
+      ],
+      "answer": "Для физлиц есть отдельные беспошлинные нормы: алкоголь, включая пиво — до 2 литров, все виды табачных изделий — до 10 пачек, духи и туалетная вода — до 3 единиц, ювелирные изделия — до 65 граммов. Стоимость этих товаров тоже включается в общий лимит ввоза.",
+      "follow_up": "Напишите, пожалуйста, какой именно товар вы везёте и сколько единиц. Я скажу, укладываетесь ли вы в норму.",
+      "source": "Приложение №1 к ПП-3512 / предоставленный пользователем текст"
+    },
+    {
+      "id": "phone_limit",
+      "title": "Сколько телефонов можно привезти",
+      "keywords": [
+        "телефон",
+        "айфон",
+        "iphone",
+        "смартфон",
+        "samsung",
+        "pro max",
+        "телефонный аппарат"
+      ],
+      "answer": "Если речь идёт о физлице и личном пользовании, телефон рассматривается по правилам для некоммерческого ввоза. Для автодорожных, пешеходных, железнодорожных и речных пунктов в перечне указана норма: 1 телефонный аппарат, в том числе наручный, 1 раз в 6 календарных месяцев. При въезде через аэропорт также важно смотреть общий беспошлинный лимит и цель ввоза: для себя или нет.",
+      "follow_up": "Напишите, пожалуйста: вы везёте через аэропорт или через сухопутную границу, сколько телефонов, их примерную цену и ввозили ли уже телефон за последние 6 месяцев.",
+      "source": "ПП-3512 + ПКМ №463 / предоставленный пользователем текст"
+    },
+    {
+      "id": "over_limit_payment",
+      "title": "Что будет при превышении нормы",
+      "keywords": [
+        "превышение",
+        "если больше",
+        "если превышу",
+        "сколько платить",
+        "таможенный платеж",
+        "30%",
+        "3 доллара"
+      ],
+      "answer": "Если физлицо ввозит товары для личного пользования и превышает беспошлинную норму, применяется единый таможенный платеж в части превышения. Ставка — 30% от таможенной стоимости, но не менее 3 долларов США за килограмм. Это правило применяется именно к некоммерческому ввозу.",
+      "follow_up": "Напишите цену товара, примерный вес и через какой пункт вы въезжаете. Я помогу понять, будет ли платеж и в какой части.",
+      "source": "с 01.01.2020 единый платеж / предоставленный пользователем текст"
+    },
+    {
+      "id": "currency_rules",
+      "title": "Какие правила по валюте",
+      "keywords": [
+        "валюта",
+        "деньги",
+        "наличные",
+        "доллары",
+        "евро",
+        "сум",
+        "сумов"
+      ],
+      "answer": "Ввоз наличной валюты Республики Узбекистан и иностранной валюты физическими лицами в Узбекистан осуществляется без ограничений. Вывоз наличной валюты физическими лицами за пределы Узбекистана допускается в сумме, не превышающей эквивалент 100 000 000 сумов. Сверх этой суммы действует специальный порядок.",
+      "follow_up": "Если хотите, напишите сумму и направление: ввозите деньги в Узбекистан или вывозите из Узбекистана. Я скажу, на что обратить внимание.",
+      "source": "предоставленный пользователем текст"
+    },
+    {
+      "id": "prohibited_goods",
+      "title": "Какие товары нельзя ввозить",
+      "keywords": [
+        "запрещено",
+        "нельзя ввозить",
+        "бпла",
+        "дрон",
+        "пиротехника",
+        "лазер",
+        "экстремизм",
+        "порнография",
+        "взрывчатка"
+      ],
+      "answer": "При ввозе в Узбекистан запрещаются, в частности, наркотические и психотропные вещества, прекурсоры, взрывоопасные вещества и средства, материалы с пропагандой войны, терроризма, насилия, экстремизма и порнографии, этиловый спирт, лазерные устройства-распространители луча, беспилотные летательные аппараты, пиротехнические средства, игровые автоматы с денежным выигрышем и отдельные товары, не соответствующие установленным требованиям.",
+      "follow_up": "Напишите, пожалуйста, какой именно товар вас интересует. Я подскажу, относится ли он к запрещённым или для него нужно отдельное разрешение.",
+      "source": "предоставленный пользователем текст"
+    },
+    {
+      "id": "permit_goods",
+      "title": "Какие товары требуют разрешение",
+      "keywords": [
+        "разрешение",
+        "нужно разрешение",
+        "заключение",
+        "культурные ценности",
+        "оружие",
+        "радиоэлектронные",
+        "религиозная литература"
+      ],
+      "answer": "Некоторые товары можно ввозить или вывозить только при наличии разрешений или заключений компетентных органов. К ним относятся, например, озоноразрушающие вещества, промышленная взрывчатка, огнестрельное оружие и патроны, дикорастущие растения и дикие животные, радиоэлектронные средства и высокочастотное оборудование, экологически опасные товары и отходы, религиозная литература и культурные ценности.",
+      "follow_up": "Напишите, какой именно товар вы хотите ввезти или вывезти. Я скажу, относится ли он к категории с разрешением.",
+      "source": "предоставленный пользователем текст"
+    },
+    {
+      "id": "commercial_vs_personal",
+      "title": "Когда товар могут посчитать коммерческим",
+      "keywords": [
+        "для себя",
+        "для личного пользования",
+        "коммерческий",
+        "на продажу",
+        "предпринимательская деятельность",
+        "много одинаковых"
+      ],
+      "answer": "Если количество однородных товаров превышает обычную потребность физического лица и членов его семьи, таможня может посчитать такой ввоз предпринимательской деятельностью. В таком случае для всей партии применяются уже общие правила таможенного оформления, а не льготы для физлиц. Поэтому раздел для физлиц работает только для личного пользования и некоммерческой цели.",
+      "follow_up": "Напишите, пожалуйста, какой товар, сколько штук и для себя ли он. Я подскажу, не выглядит ли это как коммерческий ввоз.",
+      "source": "ПП-3512 / предоставленный пользователем текст"
+    }
+  ],
+  "uz": [
+    {
+      "id": "entry_general",
+      "title": "Jismoniy shaxslar uchun Oʻzbekistonga kirish bojxona qoidalari",
+      "keywords": [
+        "kirish",
+        "olib kirish",
+        "aeroport",
+        "chegara",
+        "dubaydan",
+        "dubay",
+        "olib kelmoq"
+      ],
+      "answer": "Agar siz Oʻzbekistonga kirayotgan boʻlsangiz, shaxsiy foydalanish uchun boj toʻlovisiz limitlar shunday: xalqaro aeroportlar orqali — 2 000 AQSH dollarigacha, temir yoʻl va daryo punktlari orqali — 1 000 AQSH dollarigacha, avtomobil va piyoda punktlari orqali — 300 AQSH dollarigacha. Shu limit ichida boʻlsa, odatda yoʻlovchi deklaratsiyasi talab qilinmaydi.",
+      "follow_up": "Iltimos, qaysi yoʻl orqali kirayotganingizni va qanday tovar olib kelayotganingizni yozing. Men holatingiz bo‘yicha oddiy qilib tushuntiraman.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "exit_general",
+      "title": "Jismoniy shaxslar uchun Oʻzbekistondan chiqish bojxona qoidalari",
+      "keywords": [
+        "chiqish",
+        "olib chiqish",
+        "uchib ketmoq",
+        "oʻzbekistondan"
+      ],
+      "answer": "Agar siz Oʻzbekistondan chiqayotgan boʻlsangiz, jismoniy shaxslar 5 000 AQSH dollarigacha bo‘lgan tovarlarni bojxona deklaratsiyasisiz olib chiqishi mumkin. Lekin ayrim tovarlar uchun alohida cheklovlar va ruxsatnomalar mavjud.",
+      "follow_up": "Iltimos, aynan nima olib chiqayotganingizni yozing: oziq-ovqat, valyuta yoki boshqa tovar. Men sizning holatingiz bo‘yicha aytaman.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "entry_limits_transport",
+      "title": "Bojsiz qancha olib kirish mumkin",
+      "keywords": [
+        "bojsiz",
+        "limit",
+        "qancha",
+        "2000",
+        "1000",
+        "300"
+      ],
+      "answer": "Jismoniy shaxslar uchun notijorat olib kirishda limitlar quyidagicha: aeroport orqali — 2 000 AQSH dollarigacha, temir yo‘l va daryo punktlari orqali — 1 000 AQSH dollarigacha, avtomobil va piyoda punktlari orqali — 300 AQSH dollarigacha. Bu limitlar shaxsiy foydalanish uchun bo‘lgan tovarlarga tegishli.",
+      "follow_up": "Qaysi punkt orqali kirayotganingizni va qanday tovar olib kelayotganingizni yozing. Men limitga tushadimi, aytaman.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "entry_special_norms",
+      "title": "Alkogol, tamaki, atir va zargarlik bo‘yicha me’yorlar",
+      "keywords": [
+        "alkogol",
+        "tamaki",
+        "sigaret",
+        "atir",
+        "tualet suvi",
+        "zargarlik",
+        "oltin"
+      ],
+      "answer": "Alohida bojsiz me’yorlar bor: alkogol, shu jumladan pivo — 2 litrgacha, barcha turdagi tamaki mahsulotlari — 10 pachkagacha, atir va tualet suvi — 3 donagacha, zargarlik buyumlari — 65 grammgacha. Bu tovarlarning qiymati ham umumiy limitga kiradi.",
+      "follow_up": "Qaysi tovarni va nechta olib kelayotganingizni yozing. Men me’yorga tushadimi, aytaman.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "phone_limit",
+      "title": "Nechta telefon olib kirish mumkin",
+      "keywords": [
+        "telefon",
+        "iphone",
+        "smartfon",
+        "pro max",
+        "samsung"
+      ],
+      "answer": "Agar gap jismoniy shaxs va shaxsiy foydalanish haqida ketayotgan bo‘lsa, telefon notijorat olib kirish qoidalari bo‘yicha ko‘riladi. Avtoyo‘l, piyoda, temir yo‘l va daryo punktlari uchun ro‘yxatda 1 ta telefon apparati 6 kalendar oyda 1 marta deb ko‘rsatilgan. Aeroport orqali esa umumiy limit va olib kirish maqsadi ham muhim.",
+      "follow_up": "Iltimos, aeroport orqalimi yoki quruqlik chegarasidanmi, nechta telefon, taxminiy narxi qancha va oxirgi 6 oyda telefon olib kirganmisiz — shuni yozing.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "over_limit_payment",
+      "title": "Me’yor oshsa nima bo‘ladi",
+      "keywords": [
+        "oshsa",
+        "ko‘p bo‘lsa",
+        "qancha to‘layman",
+        "30 foiz",
+        "3 dollar"
+      ],
+      "answer": "Agar jismoniy shaxs shaxsiy foydalanish uchun tovar olib kirib, bojsiz me’yorni oshirib yuborsa, ortiqcha qismiga yagona bojxona to‘lovi qo‘llanadi. Stavka — bojxona qiymatining 30 foizi, lekin kamida 1 kg uchun 3 AQSH dollari. Bu qoida notijorat olib kirishga tegishli.",
+      "follow_up": "Tovar narxini, taxminiy vaznini va qaysi punkt orqali kirayotganingizni yozing. Men to‘lov bo‘ladimi, tushuntiraman.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "currency_rules",
+      "title": "Valyuta bo‘yicha qoidalar",
+      "keywords": [
+        "valyuta",
+        "naqd",
+        "dollar",
+        "yevro",
+        "so‘m",
+        "pul"
+      ],
+      "answer": "Jismoniy shaxslar Oʻzbekistonga naqd milliy yoki xorijiy valyutani cheklovsiz olib kirishi mumkin. Oʻzbekistondan naqd valyutani olib chiqish esa 100 000 000 soʻm ekvivalentidan oshmasligi kerak. Shu summadan ortiq bo‘lsa, alohida tartib qo‘llanadi.",
+      "follow_up": "Summani va yo‘nalishni yozing: Oʻzbekistonga olib kiryapsizmi yoki Oʻzbekistondan olib chiqyapsizmi. Men nimaga e’tibor berish kerakligini aytaman.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "prohibited_goods",
+      "title": "Qaysi tovarlarni olib kirish mumkin emas",
+      "keywords": [
+        "taqiqlangan",
+        "olib kirish mumkin emas",
+        "dron",
+        "pirotehnika",
+        "laser",
+        "portlovchi"
+      ],
+      "answer": "Oʻzbekistonga olib kirishda ayrim tovarlar taqiqlanadi. Jumladan, narkotik va psixotrop moddalar, prekursorlar, portlovchi moddalar, urush va ekstremizm targ‘ib qiluvchi materiallar, etil spirti, ayrim lazer qurilmalari, dronlar, pirotexnika vositalari va ayrim talabga javob bermaydigan mahsulotlar.",
+      "follow_up": "Qaysi tovar sizni qiziqtirayotganini yozing. Men u taqiqlanganmi yoki ruxsat kerakmi, aytaman.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "permit_goods",
+      "title": "Qaysi tovarlarga ruxsat kerak",
+      "keywords": [
+        "ruxsat",
+        "xulosa",
+        "madaniy boylik",
+        "qurol",
+        "radioelektron",
+        "diniy adabiyot"
+      ],
+      "answer": "Ba’zi tovarlarni olib kirish yoki olib chiqish uchun vakolatli organlarning ruxsati yoki xulosasi kerak bo‘ladi. Masalan, ozonni buzuvchi moddalar, sanoat portlovchi moddalari, qurol va patronlar, yovvoyi o‘simlik va hayvonlar, radioelektron vositalar, yuqori chastotali uskunalar, ekologik xavfli mahsulotlar, diniy adabiyotlar va madaniy boyliklar.",
+      "follow_up": "Qaysi tovarni olib kirmoqchi yoki olib chiqmoqchi ekaningizni yozing. Men ruxsat kerak bo‘ladimi, aytaman.",
+      "source": "foydalanuvchi bergan matn"
+    },
+    {
+      "id": "commercial_vs_personal",
+      "title": "Qachon tovar tijorat deb baholanishi mumkin",
+      "keywords": [
+        "o‘zim uchun",
+        "shaxsiy foydalanish",
+        "tijorat",
+        "sotish uchun",
+        "ko‘p bir xil"
+      ],
+      "answer": "Agar bir xil turdagi tovarlar miqdori jismoniy shaxs va uning oila a’zolari ehtiyojidan ortiq bo‘lsa, bojxona buni tadbirkorlik faoliyati deb baholashi mumkin. Bunday holatda jismoniy shaxslar uchun imtiyozlar emas, balki umumiy bojxona rasmiylashtiruvi qoidalari qo‘llanadi. Shu sababli bu bo‘lim faqat shaxsiy foydalanish va notijorat maqsad uchun ishlaydi.",
+      "follow_up": "Qanday tovar, nechta dona va o‘zingiz uchunmi — shuni yozing. Men bu holat tijoratga o‘xshaydimi, aytaman.",
+      "source": "foydalanuvchi bergan matn"
+    }
+  ]
+}
