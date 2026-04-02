@@ -436,8 +436,8 @@ PHYSICAL_BORDER_POSTS = [
     "name": "\"Қарши АЭРОи\"",
     "info": "Қашқадарё вилояти Қарши шахар Буюк турон кўчаси 3 уй",
     "contact": "",
-    "lat": null,
-    "lon": null
+    "lat": None,
+    "lon": None,
   },
   {
     "num": 13,
