@@ -1,0 +1,394 @@
+{
+  "meta": {
+    "version": "2.0",
+    "name": "physical_faq",
+    "description": "Нормативная база для AI-помощника по физическим лицам: ввоз, вывоз, валюта, лекарства, авто, пиротехника, личное пользование.",
+    "priority_rules": [
+      "Сначала искать точный ответ в этой базе.",
+      "Если вопрос про ввоз — сначала определить способ пересечения границы: аэропорт / ж.д. / авто / пешком.",
+      "Если вопрос про вывоз — сначала проверить общий лимит по стоимости, потом отдельные нормы по товару.",
+      "Если вопрос про лекарства — всегда уточнять название, количество, форму и наличие рецепта/медсправки.",
+      "Если вопрос про авто — уточнять: временный ввоз, временный вывоз, новое авто или иностранное авто.",
+      "Если данных недостаточно — задавать 1 уточняющий вопрос и не выдумывать нормы."
+    ],
+    "sources": [
+      "Постановление КМ РУз №244 от 19.04.2025",
+      "Постановление КМ РУз №463 от 22.06.2018",
+      "Материалы по нормам вывоза, валюте, лекарствам и временном ввозе авто, предоставленные пользователем",
+      "Постановление №309 по пиротехнике (по теме ограничений/запретов)"
+    ]
+  },
+  "ru": {
+    "global_rules": {
+      "import_by_route": {
+        "title": "Лимиты беспошлинного ввоза по способу въезда",
+        "answer": "Для физлиц лимит беспошлинного ввоза зависит от способа въезда: через международные аэропорты — до 2000 долларов США, через железнодорожные и речные пункты — до 1000 долларов США, через автодорожные и пешеходные пункты — до 300 долларов США.",
+        "follow_up": "Уточните, как именно вы пересекаете границу: аэропорт, поезд, авто или пешком."
+      },
+      "special_import_limits": {
+        "title": "Отдельные нормы беспошлинного ввоза",
+        "answer": "Есть отдельные нормы беспошлинного ввоза: алкоголь — до 2 литров, табачные изделия — до 10 пачек, духи и туалетная вода — до 3 единиц, ювелирные изделия — до 65 граммов.",
+        "follow_up": "Напишите, какой именно товар вы ввозите и в каком количестве."
+      },
+      "commercial_use": {
+        "title": "Личное пользование или коммерческая партия",
+        "answer": "Если количество однородных товаров превышает обычную потребность физлица и членов его семьи, таможня может посчитать такой ввоз не для личного пользования, а для предпринимательской деятельности. В этом случае могут применяться общие правила таможенного оформления.",
+        "follow_up": "Напишите количество, состояние товара (новый или б/у) и для кого он ввозится."
+      },
+      "single_customs_payment": {
+        "title": "Платеж при превышении лимита",
+        "answer": "Если физлицо превышает нормы беспошлинного ввоза и товар не предназначен для коммерческой деятельности, применяется единый таможенный платеж — 30% от таможенной стоимости, но не менее 3 долларов США за килограмм в части превышения.",
+        "follow_up": "Напишите товар, стоимость, примерный вес и способ въезда — я сориентирую точнее."
+      }
+    },
+    "faq_items": [
+      {
+        "id": "currency_export",
+        "patterns": [
+          "сколько можно вывезти валюты",
+          "сколько долларов можно вывезти",
+          "вывоз валюты",
+          "вывоз долларов",
+          "вывоз наличных",
+          "5000 долларов",
+          "10000 долларов",
+          "валюта"
+        ],
+        "topic": "currency",
+        "answer": "Физлицам разрешён вывоз наличной валюты из Узбекистана в сумме не более эквивалента 100 000 000 сумов. Ввоз наличной валюты физлицами в Узбекистан не ограничен.",
+        "follow_up": "Напишите, какую именно валюту и сумму вы хотите ввезти или вывезти — я скажу точнее по вашей ситуации."
+      },
+      {
+        "id": "export_goods_limit",
+        "patterns": [
+          "сколько можно вывезти без декларации",
+          "вывоз товаров без декларации",
+          "лимит вывоза товаров",
+          "сколько можно вывезти товаров"
+        ],
+        "topic": "export",
+        "answer": "При выезде из Узбекистана физлицо может вывозить товары общей стоимостью не более 5000 долларов США без подачи таможенной декларации.",
+        "follow_up": "Если речь о конкретном товаре, напишите его название, количество и примерную стоимость."
+      },
+      {
+        "id": "export_food_limits",
+        "patterns": [
+          "сколько можно вывезти риса",
+          "сколько можно вывезти мяса",
+          "сколько можно вывезти сахара",
+          "сколько можно вывезти масла",
+          "сколько можно вывезти фруктов",
+          "нормы вывоза продуктов"
+        ],
+        "topic": "export",
+        "answer": "Есть отдельные нормы вывоза: рис — до 3 кг, хлебобулочные изделия — до 5 кг, мясо и пищевые мясные субпродукты — до 2 кг, сахар — до 2 кг, растительные масла — до 2 кг, свежая плодоовощная продукция, виноград, бахчевые, бобовые, сушёные овощи и фрукты — до 40 кг. Стоимость этих товаров тоже учитывается в общем лимите вывоза.",
+        "follow_up": "Напишите, какой именно продукт вы вывозите и сколько килограммов."
+      },
+      {
+        "id": "medicines_general",
+        "patterns": [
+          "можно ли вывезти лекарства",
+          "можно ли ввезти лекарства",
+          "лекарства",
+          "таблетки",
+          "инсулин",
+          "ампулы",
+          "медицинские изделия"
+        ],
+        "topic": "medicines",
+        "answer": "Для личного пользования лекарства и медизделия ввозить и вывозить можно, но действуют количественные нормы. Без меддокумента допускается до 10 разных лекарственных препаратов и не более 5 упаковок каждого, а медизделий — не более 5 единиц. Лекарства должны быть в заводской упаковке.",
+        "follow_up": "Напишите название препарата, количество, лекарственную форму и есть ли рецепт или медсправка."
+      },
+      {
+        "id": "medicines_controlled",
+        "patterns": [
+          "психотропные",
+          "наркотические",
+          "сильнодействующие лекарства",
+          "трамадол",
+          "кодеин",
+          "психотроп"
+        ],
+        "topic": "medicines",
+        "answer": "По наркотическим и психотропным веществам правила строже: такие препараты нужно декларировать, а для наркотических средств обычно требуется меддокумент с указанием названия, формы и количества на курс лечения.",
+        "follow_up": "Напишите точное название препарата и есть ли у вас медицинский документ."
+      },
+      {
+        "id": "laptop_land",
+        "patterns": [
+          "2 ноутбука",
+          "два ноутбука",
+          "можно ли ввезти ноутбук",
+          "ноутбук через машину",
+          "ноутбук"
+        ],
+        "topic": "electronics_limit",
+        "answer": "Через автодорожные, пешеходные, железнодорожные и речные пункты для ноутбука действует количественная норма: 1 единица на одно физлицо в установленный период 6 календарных месяцев. Если ввозите 2 ноутбука, таможня может начислить платежи на превышение и дополнительно оценить цель ввоза.",
+        "follow_up": "Уточните, через какой пункт вы въезжаете и ноутбуки новые или б/у."
+      },
+      {
+        "id": "phone_air",
+        "patterns": [
+          "сколько телефонов можно привезти",
+          "айфон",
+          "iphone",
+          "смартфон",
+          "мобильный телефон",
+          "телефон"
+        ],
+        "topic": "phones",
+        "answer": "По телефонам важно учитывать способ въезда и признаки личного пользования. Для авиапересечения в материалах указано: телефонные аппараты, в том числе мобильные телефоны и устройства с модулем мобильной связи — до 2 единиц при каждом въезде. Если телефонов несколько и они одинаковые, таможня может дополнительно оценивать, не коммерческая ли это партия.",
+        "follow_up": "Напишите, сколько именно телефонов, они новые или б/у, и через какой пункт вы въезжаете."
+      },
+      {
+        "id": "household_land",
+        "patterns": [
+          "холодильник",
+          "телевизор",
+          "стиральная машина",
+          "пылесос",
+          "микроволновка",
+          "плита",
+          "компьютерная техника",
+          "планшет"
+        ],
+        "topic": "electronics_limit",
+        "answer": "Через автодорожные, пешеходные, железнодорожные и речные пункты на многие бытовые товары действует норма 1 единица на 6 календарных месяцев на одно физлицо. Это касается, например, холодильника, телевизора, стиральной машины, пылесоса, планшета, ноутбука и другой подобной техники.",
+        "follow_up": "Напишите точное название товара, количество и как именно вы пересекаете границу."
+      },
+      {
+        "id": "auto_temp_import",
+        "patterns": [
+          "временный ввоз авто",
+          "временный вывоз авто",
+          "машина",
+          "автомобиль",
+          "авто",
+          "иностранное авто"
+        ],
+        "topic": "vehicles",
+        "answer": "По автотранспортным средствам для физлиц действует отдельный режим. Общая продолжительность пребывания транспортного средства, временно ввозимого для некоммерческих целей, не должна превышать в общей сложности 90 календарных дней в течение календарного года, если иное не оформлено в установленном порядке.",
+        "follow_up": "Уточните, что именно вас интересует: временный ввоз, временный вывоз, новое авто или въезд на иностранном автомобиле."
+      },
+      {
+        "id": "pyro",
+        "patterns": [
+          "пиротехника",
+          "салют",
+          "фейерверк",
+          "петарды"
+        ],
+        "topic": "pyro",
+        "answer": "По пиротехническим изделиям действуют строгие ограничения. Такие товары относятся к чувствительной категории, и по ним нельзя ориентироваться только на общий бытовой ответ.",
+        "follow_up": "Напишите точное название товара и цель ввоза или вывоза — тогда можно проверить ограничения точнее."
+      },
+      {
+        "id": "prohibited_or_permits",
+        "patterns": [
+          "что нельзя вывозить",
+          "что нельзя ввозить",
+          "разрешение",
+          "культурные ценности",
+          "оружие",
+          "патроны",
+          "растения",
+          "животные"
+        ],
+        "topic": "permits",
+        "answer": "Для ряда товаров требуются специальные разрешения компетентных органов. Это касается, например, наркотических и психотропных веществ, культурных ценностей, огнестрельного оружия и патронов, дикорастущих растений, диких животных, экологически опасных продуктов и отходов. По отдельным чувствительным категориям действуют запреты или особый порядок.",
+        "follow_up": "Напишите точное название товара — я подскажу, относится ли он к чувствительной категории."
+      },
+      {
+        "id": "route_needed",
+        "patterns": [
+          "сколько можно ввезти",
+          "беспошлинный ввоз",
+          "норма ввоза",
+          "лимит ввоза"
+        ],
+        "topic": "import",
+        "answer": "Чтобы точно ответить по беспошлинному ввозу, сначала нужно определить способ пересечения границы: аэропорт, железнодорожный пункт, речной пункт, автодорожный или пеший переход. От этого зависит лимит и возможные количественные нормы по отдельным товарам.",
+        "follow_up": "Напишите, как именно вы въезжаете и какой товар везёте."
+      }
+    ]
+  },
+  "uz": {
+    "global_rules": {
+      "import_by_route": {
+        "title": "Kirish usuliga qarab bojsiz olib kirish limiti",
+        "answer": "Jismoniy shaxslar uchun bojsiz olib kirish limiti kirish usuliga bog‘liq: xalqaro aeroportlar orqali — 2000 AQSH dollarigacha, temir yo‘l va daryo punktlari orqali — 1000 AQSH dollarigacha, avtoyo‘l va piyoda punktlari orqali — 300 AQSH dollarigacha.",
+        "follow_up": "Qanday yo‘l bilan kirayotganingizni yozing: aeroport, poyezd, avto yoki piyoda."
+      },
+      "special_import_limits": {
+        "title": "Alohida bojsiz me’yorlar",
+        "answer": "Alohida bojsiz me’yorlar mavjud: alkogol — 2 litrgacha, tamaki mahsulotlari — 10 pachkagacha, atir va tualet suvi — 3 birlikkacha, zargarlik buyumlari — 65 grammgacha.",
+        "follow_up": "Qaysi tovarni va qancha miqdorda olib kirayotganingizni yozing."
+      },
+      "commercial_use": {
+        "title": "Shaxsiy foydalanish yoki tijorat",
+        "answer": "Agar bir xil tovarlar soni oddiy oilaviy ehtiyojdan ortiq bo‘lsa, bojxona buni shaxsiy foydalanish emas, balki tijorat maqsadidagi olib kirish deb baholashi mumkin.",
+        "follow_up": "Miqdorini, yangi yoki ishlatilganini va kim uchun olib kirayotganingizni yozing."
+      },
+      "single_customs_payment": {
+        "title": "Me’yor oshsa to‘lov",
+        "answer": "Agar bojsiz limit oshsa va tovar tijorat uchun bo‘lmasa, oshgan qismga yagona bojxona to‘lovi qo‘llanadi: bojxona qiymatining 30 foizi, lekin kamida har kg uchun 3 AQSH dollari.",
+        "follow_up": "Tovar nomi, qiymati, taxminiy vazni va kirish usulini yozing."
+      }
+    },
+    "faq_items": [
+      {
+        "id": "currency_export",
+        "patterns": [
+          "qancha valyuta olib chiqish mumkin",
+          "dollar olib chiqish",
+          "naqd pul",
+          "5000 dollar",
+          "10000 dollar",
+          "valyuta"
+        ],
+        "topic": "currency",
+        "answer": "Jismoniy shaxslar naqd valyutani O‘zbekistonga cheklovsiz olib kirishi mumkin. Olib chiqish esa 100 000 000 so‘m ekvivalentidan oshmagan miqdorda ruxsat etiladi.",
+        "follow_up": "Qaysi valyuta va qancha summa haqida gap ketayotganini yozing."
+      },
+      {
+        "id": "export_goods_limit",
+        "patterns": [
+          "deklaratsiyasiz qancha tovar olib chiqish mumkin",
+          "tovar olib chiqish limiti",
+          "qancha tovar olib chiqish mumkin"
+        ],
+        "topic": "export",
+        "answer": "O‘zbekistondan chiqishda jismoniy shaxs umumiy qiymati 5000 AQSH dollaridan oshmaydigan tovarlarni deklaratsiyasiz olib chiqishi mumkin.",
+        "follow_up": "Agar aniq tovar bo‘lsa, nomi, soni va taxminiy qiymatini yozing."
+      },
+      {
+        "id": "export_food_limits",
+        "patterns": [
+          "guruch",
+          "go‘sht",
+          "shakar",
+          "yog‘",
+          "meva",
+          "sabzavot",
+          "oziq-ovqat olib chiqish"
+        ],
+        "topic": "export",
+        "answer": "Alohida me’yorlar mavjud: guruch — 3 kg gacha, non mahsulotlari — 5 kg gacha, go‘sht va go‘sht mahsulotlari — 2 kg gacha, shakar — 2 kg gacha, o‘simlik yog‘i — 2 kg gacha, meva-sabzavot va o‘xshash mahsulotlar — 40 kg gacha.",
+        "follow_up": "Qaysi mahsulotni va qancha kg olib chiqayotganingizni yozing."
+      },
+      {
+        "id": "medicines_general",
+        "patterns": [
+          "dori",
+          "tabletkalar",
+          "insulin",
+          "ampula",
+          "tibbiy buyum"
+        ],
+        "topic": "medicines",
+        "answer": "Shaxsiy foydalanish uchun dori vositalari va tibbiy buyumlarni olib kirish va olib chiqish mumkin. Tibbiy hujjatsiz 10 xil dori vositasigacha va har biridan 5 qadoqdan oshmagan miqdorda, tibbiy buyumlar esa 5 donagacha ruxsat etiladi.",
+        "follow_up": "Dori nomi, miqdori, dori shakli va retsept bor-yo‘qligini yozing."
+      },
+      {
+        "id": "medicines_controlled",
+        "patterns": [
+          "psixotrop",
+          "narkotik",
+          "kuchli dori"
+        ],
+        "topic": "medicines",
+        "answer": "Narkotik va psixotrop moddalar bo‘yicha qoidalar qat’iyroq: bunday dorilar deklaratsiya qilinadi va odatda tibbiy hujjat talab qilinadi.",
+        "follow_up": "Dorining aniq nomini va tibbiy hujjat bor-yo‘qligini yozing."
+      },
+      {
+        "id": "laptop_land",
+        "patterns": [
+          "noutbuk",
+          "2 ta noutbuk",
+          "noutbukni mashinada olib kirish"
+        ],
+        "topic": "electronics_limit",
+        "answer": "Avtoyo‘l, piyoda, temir yo‘l va daryo punktlari orqali noutbuk uchun miqdoriy me’yor — 1 dona, 6 kalendar oy davrida. 2 ta noutbuk olib kirilsa, oshgan qism bo‘yicha to‘lov va maqsad bo‘yicha qo‘shimcha baholash bo‘lishi mumkin.",
+        "follow_up": "Qaysi punkt orqali kirayotganingizni va noutbuklar yangi yoki ishlatilganini yozing."
+      },
+      {
+        "id": "phone_air",
+        "patterns": [
+          "telefon",
+          "iphone",
+          "smartfon",
+          "mobil telefon"
+        ],
+        "topic": "phones",
+        "answer": "Telefonlar bo‘yicha kirish usuli va shaxsiy foydalanish alomatlari muhim. Aviatsiya orqali kirishda telefon apparatlari, shu jumladan mobil telefonlar va mobil aloqa moduliga ega qurilmalar — har bir kirishda 2 donagacha deb ko‘rsatilgan. Bir nechta bir xil yangi telefon bo‘lsa, bojxona tijorat maqsadini ham tekshirishi mumkin.",
+        "follow_up": "Nechta telefon, ular yangi yoki ishlatilganmi va qaysi yo‘l bilan kirayotganingizni yozing."
+      },
+      {
+        "id": "household_land",
+        "patterns": [
+          "muzlatgich",
+          "televizor",
+          "kir yuvish mashinasi",
+          "pylesos",
+          "planshet",
+          "kompyuter texnikasi"
+        ],
+        "topic": "electronics_limit",
+        "answer": "Avtoyo‘l, piyoda, temir yo‘l va daryo punktlari orqali ko‘plab maishiy texnika uchun me’yor 1 dona, 6 kalendar oy davrida. Bu muzlatgich, televizor, kir yuvish mashinasi, planshet, noutbuk va shu kabi texnikalarga tegishli.",
+        "follow_up": "Aniq tovar nomi, soni va qaysi yo‘l bilan kirayotganingizni yozing."
+      },
+      {
+        "id": "auto_temp_import",
+        "patterns": [
+          "mashina",
+          "avto",
+          "vaqtincha olib kirish",
+          "vaqtincha olib chiqish",
+          "xorijiy avtomobil"
+        ],
+        "topic": "vehicles",
+        "answer": "Avtotransport vositalari bo‘yicha alohida tartib mavjud. Jismoniy shaxs tomonidan nokommersiya maqsadida vaqtincha olib kirilgan transport vositasi odatda bir kalendar yil davomida jami 90 kalendar kundan oshmasligi kerak.",
+        "follow_up": "Sizni aynan nima qiziqtiradi: vaqtincha olib kirishmi, olib chiqishmi, yangi auto yoki xorijiy avtomobil bilan kirishmi?"
+      },
+      {
+        "id": "pyro",
+        "patterns": [
+          "pirotexnika",
+          "salyut",
+          "feyerverk",
+          "petarda"
+        ],
+        "topic": "pyro",
+        "answer": "Pirotexnika bo‘yicha qat’iy cheklovlar mavjud. Bunday tovarlar sezgir toifaga kiradi va ular bo‘yicha umumiy maishiy javob yetarli bo‘lmaydi.",
+        "follow_up": "Aniq tovar nomini va olib kirish yoki olib chiqish maqsadini yozing."
+      },
+      {
+        "id": "prohibited_or_permits",
+        "patterns": [
+          "nima olib kirish mumkin emas",
+          "nima olib chiqish mumkin emas",
+          "ruxsatnoma",
+          "madaniy boylik",
+          "qurol",
+          "o‘simlik",
+          "hayvon"
+        ],
+        "topic": "permits",
+        "answer": "Ba’zi tovarlar uchun maxsus ruxsat talab qilinadi. Bu narkotik va psixotrop moddalar, madaniy boyliklar, qurol va patronlar, yovvoyi o‘simliklar, yovvoyi hayvonlar, ekologik xavfli mahsulotlar va chiqindilar kabi toifalarga tegishli.",
+        "follow_up": "Aniq tovar nomini yozing — men sezgir toifaga kiradimi, yo‘qmi aytaman."
+      },
+      {
+        "id": "route_needed",
+        "patterns": [
+          "qancha olib kirish mumkin",
+          "bojsiz olib kirish",
+          "olib kirish limiti",
+          "me’yor"
+        ],
+        "topic": "import",
+        "answer": "Bojsiz olib kirish bo‘yicha aniq javob uchun avval kirish usulini aniqlash kerak: aeroport, temir yo‘l, daryo, avtoyo‘l yoki piyoda. Limit va ayrim tovarlar bo‘yicha miqdoriy me’yorlar shu narsaga bog‘liq.",
+        "follow_up": "Qaysi yo‘l bilan kirayotganingizni va qaysi tovarni olib kelayotganingizni yozing."
+      }
+    ]
+  }
+}
