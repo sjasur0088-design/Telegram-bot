@@ -4636,3 +4636,33 @@ async def application_status_callback(call: types.CallbackQuery):
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
+@dp.message_handler(content_types=["text"])
+async def universal_handler(message: types.Message):
+    text = message.text.lower()
+
+    # 🟢 ВСЕГДА отвечаем на кнопки (даже если сломался mode)
+    if "tayyor" in text:
+        await message.answer("📋 Tayyor savollar ishlamoqda")
+        return
+
+    if "savolingiz" in text or "savol" in text:
+        await message.answer("✍ Savolingizni yozing, men javob beraman")
+        return
+
+    if "orqaga" in text:
+        await message.answer("⬅️ Orqaga qaytdingiz")
+        return
+
+    if "asosiy" in text:
+        await message.answer("🏠 Asosiy menyu")
+        return
+
+    # 🔥 ФИЗЛИЦА — ОСНОВА
+    answer = search_physical_faq(message.text, "ru")
+
+    if answer:
+        await message.answer(answer)
+        return
+
+    # 🤖 fallback AI (если есть)
+    await message.answer("Savolingizni tushundim. Batafsil yozing: tovar, narx, yo‘l.")
