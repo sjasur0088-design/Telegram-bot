@@ -1360,7 +1360,8 @@ PHYSICAL_FAQ = {
         )
     }
 }
-
+def load_physical_faq_pro():
+    return {"ru": {"faq_items": [], "global_rules": {}}, "uz": {"faq_items": [], "global_rules": {}}}
 PHYSICAL_FAQ_PRO = load_physical_faq_pro()
 
 
