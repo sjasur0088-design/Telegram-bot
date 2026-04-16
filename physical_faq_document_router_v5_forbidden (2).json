@@ -1,0 +1,693 @@
+{
+  "meta": {
+    "version": "1.0-document-routed",
+    "name": "physical_faq_document_router",
+    "description": "База для физлиц с маршрутизацией по документам: сначала категория, потом нужный документ, потом короткий ответ, потом AI."
+  },
+  "routing": {
+    "electronics": {
+      "source": "VMQ 463 / 22.06.2018 / ilova 1-2",
+      "keywords_ru": [
+        "телевизор",
+        "телефон",
+        "айфон",
+        "смартфон",
+        "ноутбук",
+        "планшет",
+        "принтер",
+        "компьютер",
+        "холодильник",
+        "морозильник",
+        "кондиционер",
+        "стиральная машина",
+        "пылесос",
+        "газовая плита",
+        "электроплита",
+        "микроволновка",
+        "духовка",
+        "мясорубка",
+        "утюг",
+        "фен",
+        "кухонный комбайн"
+      ],
+      "keywords_uz": [
+        "televizor",
+        "telefon",
+        "iphone",
+        "smartfon",
+        "noutbuk",
+        "planshet",
+        "printer",
+        "kompyuter",
+        "sovutgich",
+        "muzlatgich",
+        "konditsioner",
+        "kir yuvish mashinasi",
+        "chang yutgich",
+        "gaz plitasi",
+        "elektr plita",
+        "mikroto'lqinli pech",
+        "duxovkali pech",
+        "go'sht qiymalagich",
+        "dazmol",
+        "fen",
+        "oshxona kombayni"
+      ]
+    },
+    "medicine": {
+      "source": "medicine_rules_compiled",
+      "keywords_ru": [
+        "лекарство",
+        "таблетки",
+        "цитрамон",
+        "парацетамол",
+        "ибупрофен",
+        "анальгин",
+        "антибиотик",
+        "лекарства",
+        "рецепт",
+        "психотропные",
+        "наркотические"
+      ],
+      "keywords_uz": [
+        "dori",
+        "tabletka",
+        "sitramon",
+        "paratsetamol",
+        "ibuprofen",
+        "analgin",
+        "antibiotik",
+        "dorilar",
+        "citramon",
+        "retsept",
+        "psixotrop",
+        "narkotik"
+      ]
+    },
+    "currency": {
+      "source": "currency_rules_compiled",
+      "keywords_ru": [
+        "валюта",
+        "доллар",
+        "евро",
+        "наличные",
+        "деньги",
+        "сум",
+        "доллары",
+        "usd",
+        "eur",
+        "сумы"
+      ],
+      "keywords_uz": [
+        "valyuta",
+        "dollar",
+        "yevro",
+        "naqd",
+        "pul",
+        "so'm",
+        "sum",
+        "evro",
+        "usd",
+        "eur"
+      ]
+    },
+    "jewelry": {
+      "keywords_ru": [
+        "золото",
+        "ювелир",
+        "кольцо",
+        "цепочка",
+        "серьги",
+        "браслет"
+      ],
+      "keywords_uz": [
+        "tilla",
+        "zargarlik",
+        "uzuk",
+        "zanjir",
+        "zirak",
+        "braslet"
+      ]
+    },
+    "forbidden": {
+      "keywords_ru": [
+        "дрон",
+        "квадрокоптер",
+        "беспилотник",
+        "пиротехника",
+        "салют",
+        "фейерверк",
+        "петарда",
+        "оружие",
+        "пистолет",
+        "ружье",
+        "боеприпасы",
+        "патроны",
+        "наркотики",
+        "психотропные",
+        "прекурсоры",
+        "культурные ценности",
+        "антиквариат",
+        "редкие животные",
+        "редкие растения"
+      ],
+      "keywords_uz": [
+        "dron",
+        "kvadrokopter",
+        "bepilot",
+        "pirotekhnika",
+        "salyut",
+        "feyerverk",
+        "petarda",
+        "qurol",
+        "to'pponcha",
+        "miltiq",
+        "o'q-dori",
+        "patron",
+        "narkotik",
+        "psixotrop",
+        "prekursor",
+        "madaniy boyliklar",
+        "antikvar",
+        "noyob hayvonlar",
+        "noyob o'simliklar"
+      ]
+    }
+  },
+  "general_rules": {
+    "import_limits_usd": {
+      "air": 1000,
+      "rail_river": 500,
+      "car_foot": 300,
+      "courier": 200,
+      "post": 100
+    },
+    "duty_rule": {
+      "ru": "При превышении лимита применяется единый таможенный платеж: 30% от суммы превышения, но не менее 3 долларов США за каждый килограмм.",
+      "uz": "Limit oshsa, yagona bojxona to'lovi qo'llanadi: oshgan summaning 30 foizi, lekin har bir kilogramm uchun kamida 3 AQSh dollaridan kam emas."
+    }
+  },
+  "knowledge": {
+    "electronics": {
+      "items": {
+        "tv": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Телевизор можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Televizor 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "phone": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Телефон можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Telefon 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "computer": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Компьютерную технику можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Kompyuter texnikasini 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "printer": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Принтер или МФУ можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Printer yoki ko'p funksiyali ofis qurilmasini 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "tablet": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Планшет можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Planshetni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "laptop": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Ноутбук можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Noutbukni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "fridge": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Холодильник можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Sovutgichni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "freezer": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Морозильник можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Muzlatgichni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "ac": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Кондиционер можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Konditsionerni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "washing_machine": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Стиральную машину можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Kir yuvish mashinasini 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "vacuum": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Пылесос можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Chang yutgichni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "gas_stove": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Газовую плиту можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Gaz plitasini 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "electric_stove": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Электроплиту можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Elektr plitani 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "microwave": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Микроволновую печь можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Mikroto'lqinli pechni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "oven": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Духовку можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Duxovkali pechni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "meat_grinder": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Электрическую мясорубку можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Elektr go'sht qiymalagichni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "iron": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Утюг можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Dazmolni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "hairdryer": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Фен можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Fenni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        },
+        "kitchen_machine": {
+          "quantity_norm": "1 dona",
+          "periodicity": "6 kalendar oy",
+          "base_answer_ru": "Кухонный комбайн можно ввозить 1 штуку в 6 месяцев.",
+          "base_answer_uz": "Oshxona kombaynini 1 dona, 6 oyda 1 marta olib kirish mumkin."
+        }
+      },
+      "answer_template_ru": "{item_answer} По сумме лимит зависит от поста: аэропорт — до 1000$, авто/пешком — до 300$, ж/д и речные пункты — до 500$. Если стоимость выше лимита, на превышение может начисляться единый таможенный платеж.",
+      "answer_template_uz": "{item_answer} Qiymat limiti postga bog'liq: aeroport — 1000$, avto/piyoda — 300$, temir yo'l va daryo punktlari — 500$. Narx limitdan oshsa, oshgan qismiga bojxona to'lovi chiqishi mumkin."
+    },
+    "medicine": {
+      "base_rules": {
+        "basic_limit_ru": "Для личного пользования обычно допускается до 10 видов лекарств и не более 5 упаковок каждого.",
+        "basic_limit_uz": "Shaxsiy foydalanish uchun odatda 10 xil dori va har biridan 5 qadoqqacha ruxsat etiladi.",
+        "forbidden_ru": "Наркотические и психотропные препараты требуют отдельного порядка и документов.",
+        "forbidden_uz": "Narkotik va psixotrop dorilar alohida tartib va hujjatlarni talab qiladi.",
+        "followup_ru": "Если речь о конкретном препарате, важно смотреть его состав, количество и есть ли рецепт.",
+        "followup_uz": "Agar gap aniq dori haqida bo'lsa, tarkibi, miqdori va retsept bor-yo'qligini ko'rish kerak."
+      },
+      "common_drugs": {
+        "citramon": {
+          "names_ru": [
+            "цитрамон"
+          ],
+          "names_uz": [
+            "sitramon",
+            "citramon"
+          ],
+          "answer_ru": "Цитрамон обычно относится к обычным лекарствам для личного пользования и не считается наркотическим или психотропным препаратом.",
+          "answer_uz": "Sitramon odatda oddiy dori hisoblanadi va narkotik yoki psixotrop preparatga kirmaydi."
+        },
+        "paracetamol": {
+          "names_ru": [
+            "парацетамол"
+          ],
+          "names_uz": [
+            "paratsetamol",
+            "paracetamol"
+          ],
+          "answer_ru": "Парацетамол обычно относится к обычным лекарствам для личного пользования.",
+          "answer_uz": "Paratsetamol odatda shaxsiy foydalanish uchun oddiy dori hisoblanadi."
+        },
+        "ibuprofen": {
+          "names_ru": [
+            "ибупрофен"
+          ],
+          "names_uz": [
+            "ibuprofen"
+          ],
+          "answer_ru": "Ибупрофен обычно относится к обычным лекарствам для личного пользования.",
+          "answer_uz": "Ibuprofen odatda shaxsiy foydalanish uchun oddiy dori hisoblanadi."
+        },
+        "analgin": {
+          "names_ru": [
+            "анальгин"
+          ],
+          "names_uz": [
+            "analgin"
+          ],
+          "answer_ru": "Анальгин обычно относится к обычным лекарствам для личного пользования.",
+          "answer_uz": "Analgin odatda shaxsiy foydalanish uchun oddiy dori hisoblanadi."
+        },
+        "antibiotics": {
+          "names_ru": [
+            "антибиотик",
+            "антибиотики"
+          ],
+          "names_uz": [
+            "antibiotik",
+            "antibiotiklar"
+          ],
+          "answer_ru": "Антибиотики обычно можно ввозить для личного пользования в разумном количестве, но лучше иметь рецепт.",
+          "answer_uz": "Antibiotiklarni odatda shaxsiy foydalanish uchun oqilona miqdorda olib kirish mumkin, lekin retsept bo'lsa yaxshiroq."
+        }
+      },
+      "patterns": {
+        "basic_ru": [
+          "сколько лекарств можно",
+          "сколько таблеток можно",
+          "можно ли лекарства",
+          "сколько упаковок лекарств можно"
+        ],
+        "basic_uz": [
+          "qancha dori olib kirish mumkin",
+          "qancha tabletka olib kirish mumkin",
+          "dori olib kirsa bo'ladimi",
+          "qancha qadoq dori mumkin"
+        ],
+        "forbidden_ru": [
+          "какие лекарства нельзя",
+          "какие лекарства запрещены",
+          "психотропные лекарства",
+          "наркотические лекарства"
+        ],
+        "forbidden_uz": [
+          "qaysi dorilar taqiqlangan",
+          "psixotrop dorilar",
+          "narkotik dorilar",
+          "qaysi dori mumkin emas"
+        ]
+      },
+      "answer_template_ru": "{base_answer} {extra}",
+      "answer_template_uz": "{base_answer} {extra}"
+    },
+    "currency": {
+      "base_rules": {
+        "import_ru": "Ввоз наличной валюты физлицами в Узбекистан не ограничен по сумме.",
+        "import_uz": "Jismoniy shaxslar tomonidan naqd valyutani O'zbekistonga olib kirish summa bo'yicha cheklanmagan.",
+        "export_ru": "Вывоз наличной валюты разрешён в пределах эквивалента 100 000 000 сумов.",
+        "export_uz": "Naqd valyutani olib chiqish 100 000 000 so'm ekvivalenti doirasida ruxsat etiladi.",
+        "declaration_ru": "Если сумма превышает установленный порог, могут потребоваться декларация и подтверждающие документы.",
+        "declaration_uz": "Agar summa belgilangan me'yordan oshsa, deklaratsiya va tasdiqlovchi hujjatlar talab qilinishi mumkin."
+      },
+      "patterns": {
+        "import_ru": [
+          "сколько валюты можно ввезти",
+          "сколько долларов можно ввезти",
+          "ввоз валюты",
+          "можно ввозить наличные"
+        ],
+        "import_uz": [
+          "qancha valyuta olib kirish mumkin",
+          "qancha dollar olib kirish mumkin",
+          "valyuta olib kirish mumkinmi",
+          "naqd pul olib kirsa bo'ladimi"
+        ],
+        "export_ru": [
+          "сколько валюты можно вывезти",
+          "сколько долларов можно вывезти",
+          "вывоз валюты",
+          "сколько наличных можно с собой"
+        ],
+        "export_uz": [
+          "qancha valyuta olib chiqish mumkin",
+          "qancha dollar olib chiqish mumkin",
+          "valyuta olib chiqish mumkinmi",
+          "qancha naqd pul olib chiqsa bo'ladi"
+        ]
+      },
+      "common_cases": {
+        "usd": {
+          "names_ru": [
+            "доллар",
+            "доллары",
+            "usd"
+          ],
+          "names_uz": [
+            "dollar",
+            "usd"
+          ]
+        },
+        "eur": {
+          "names_ru": [
+            "евро",
+            "eur"
+          ],
+          "names_uz": [
+            "yevro",
+            "evro",
+            "eur"
+          ]
+        },
+        "cash": {
+          "names_ru": [
+            "наличные",
+            "деньги"
+          ],
+          "names_uz": [
+            "naqd",
+            "pul"
+          ]
+        }
+      },
+      "answer_template_ru": "{base_answer} {extra}",
+      "answer_template_uz": "{base_answer} {extra}"
+    },
+    "jewelry": {
+      "base_rules": {
+        "general_ru": "Ювелирные изделия для личного пользования обычно допускаются в разумном количестве.",
+        "general_uz": "Shaxsiy foydalanish uchun zargarlik buyumlari odatda oqilona miqdorda ruxsat etiladi.",
+        "export_limit_ru": "При вывозе ювелирных изделий важно учитывать их стоимость и необходимость декларирования.",
+        "export_limit_uz": "Zargarlik buyumlarini olib chiqishda ularning qiymati va deklaratsiya talablari muhim.",
+        "import_limit_ru": "При ввозе ювелирных изделий оценивается их количество и характер (личное пользование или коммерция).",
+        "import_limit_uz": "Zargarlik buyumlarini olib kirishda ularning miqdori va maqsadi (shaxsiy yoki tijorat) baholanadi."
+      },
+      "patterns": {
+        "general_ru": [
+          "можно ли золото",
+          "ювелирные изделия можно",
+          "можно ли кольцо",
+          "можно ли цепочку"
+        ],
+        "general_uz": [
+          "tilla olib chiqsa boladimi",
+          "zargarlik buyumlari mumkinmi",
+          "uzuk olib chiqsa boladimi",
+          "zanjir olib chiqsa boladimi"
+        ]
+      },
+      "items": {
+        "ring": {
+          "names_ru": [
+            "кольцо"
+          ],
+          "names_uz": [
+            "uzuk"
+          ],
+          "answer_ru": "Кольцо для личного пользования обычно допускается без ограничений по количеству, если это не выглядит как товарная партия.",
+          "answer_uz": "Uzuk shaxsiy foydalanish uchun odatda ruxsat etiladi, agar bu tovar partiyasiga o'xshamasa."
+        },
+        "chain": {
+          "names_ru": [
+            "цепочка"
+          ],
+          "names_uz": [
+            "zanjir"
+          ],
+          "answer_ru": "Цепочка для личного пользования обычно допускается, если количество разумное.",
+          "answer_uz": "Zanjir shaxsiy foydalanish uchun odatda ruxsat etiladi, agar miqdor oqilona bo'lsa."
+        },
+        "earrings": {
+          "names_ru": [
+            "серьги"
+          ],
+          "names_uz": [
+            "zirak"
+          ],
+          "answer_ru": "Серьги для личного пользования обычно допускаются.",
+          "answer_uz": "Ziraklar shaxsiy foydalanish uchun odatda ruxsat etiladi."
+        },
+        "bracelet": {
+          "names_ru": [
+            "браслет"
+          ],
+          "names_uz": [
+            "braslet"
+          ],
+          "answer_ru": "Браслет для личного пользования обычно допускается.",
+          "answer_uz": "Braslet shaxsiy foydalanish uchun odatda ruxsat etiladi."
+        }
+      },
+      "answer_template_ru": "{base_answer} Важно, чтобы количество не выглядело как коммерческая партия.",
+      "answer_template_uz": "{base_answer} Muhimi, miqdor tijorat partiyasiga o'xshamasligi kerak."
+    },
+    "forbidden": {
+      "base_rules": {
+        "general_ru": "Есть товары, которые запрещены или требуют отдельного разрешения. По ним сначала важно понять точный вид товара.",
+        "general_uz": "Ayrim tovarlar taqiqlangan yoki alohida ruxsat talab qiladi. Avval tovarning aniq turini bilish muhim.",
+        "permit_ru": "Для части товаров нужен специальный разрешительный порядок.",
+        "permit_uz": "Ayrim tovarlar uchun maxsus ruxsat tartibi kerak bo'ladi.",
+        "ban_ru": "Некоторые товары нельзя просто так ввозить или вывозить как обычные личные вещи.",
+        "ban_uz": "Ba'zi tovarlarni oddiy shaxsiy buyum sifatida shunchaki olib kirish yoki olib chiqish mumkin emas."
+      },
+      "items": {
+        "drone": {
+          "names_ru": [
+            "дрон",
+            "квадрокоптер",
+            "беспилотник"
+          ],
+          "names_uz": [
+            "dron",
+            "kvadrokopter",
+            "bepilot"
+          ],
+          "answer_ru": "Дроны и квадрокоптеры относятся к товарам с особым порядком. Без специального разрешения их нельзя рассматривать как обычный товар для личного пользования.",
+          "answer_uz": "Dron va kvadrokopterlar alohida tartibdagi tovarlarga kiradi. Maxsus ruxsatsiz ularni oddiy shaxsiy buyum sifatida ko'rib bo'lmaydi."
+        },
+        "pyro": {
+          "names_ru": [
+            "пиротехника",
+            "салют",
+            "фейерверк",
+            "петарда"
+          ],
+          "names_uz": [
+            "pirotekhnika",
+            "salyut",
+            "feyerverk",
+            "petarda"
+          ],
+          "answer_ru": "Пиротехника и салюты относятся к товарам с ограничением. Для них обычно нужен отдельный разрешительный порядок.",
+          "answer_uz": "Pirotexnika va salyutlar cheklangan tovarlarga kiradi. Ular uchun odatda alohida ruxsat tartibi kerak bo'ladi."
+        },
+        "weapon": {
+          "names_ru": [
+            "оружие",
+            "пистолет",
+            "ружье",
+            "боеприпасы",
+            "патроны"
+          ],
+          "names_uz": [
+            "qurol",
+            "to'pponcha",
+            "miltiq",
+            "o'q-dori",
+            "patron"
+          ],
+          "answer_ru": "Оружие и боеприпасы нельзя ввозить или вывозить как обычные личные вещи. Для них действует специальный порядок и разрешения.",
+          "answer_uz": "Qurol va o'q-dorini oddiy shaxsiy buyum sifatida olib kirish yoki olib chiqish mumkin emas. Ular uchun maxsus tartib va ruxsatlar kerak."
+        },
+        "narcotics": {
+          "names_ru": [
+            "наркотики",
+            "наркотические вещества",
+            "психотропные вещества",
+            "прекурсоры"
+          ],
+          "names_uz": [
+            "narkotik",
+            "narkotik moddalar",
+            "psixotrop moddalar",
+            "prekursor"
+          ],
+          "answer_ru": "Наркотические и психотропные вещества относятся к товарам с особо строгим порядком. Их нельзя рассматривать как обычный товар для личного пользования.",
+          "answer_uz": "Narkotik va psixotrop moddalar juda qat'iy tartibdagi tovarlarga kiradi. Ularni oddiy shaxsiy tovar sifatida ko'rib bo'lmaydi."
+        },
+        "cultural_values": {
+          "names_ru": [
+            "культурные ценности",
+            "антиквариат",
+            "картина",
+            "старинные вещи"
+          ],
+          "names_uz": [
+            "madaniy boyliklar",
+            "antikvar",
+            "kartina",
+            "eski qimmatbaho buyumlar"
+          ],
+          "answer_ru": "Культурные ценности и антиквариат могут требовать отдельного разрешения и специального порядка вывоза.",
+          "answer_uz": "Madaniy boyliklar va antikvar buyumlar uchun alohida ruxsat va maxsus olib chiqish tartibi talab qilinishi mumkin."
+        },
+        "animals_plants": {
+          "names_ru": [
+            "редкие животные",
+            "дикие животные",
+            "редкие растения",
+            "семена редких растений"
+          ],
+          "names_uz": [
+            "noyob hayvonlar",
+            "yovvoyi hayvonlar",
+            "noyob o'simliklar",
+            "noyob urug'lar"
+          ],
+          "answer_ru": "Редкие животные, растения и связанные с ними объекты могут требовать отдельного разрешения и не относятся к обычным личным вещам.",
+          "answer_uz": "Noyob hayvonlar, o'simliklar va ular bilan bog'liq buyumlar alohida ruxsat talab qilishi mumkin va oddiy shaxsiy buyumlarga kirmaydi."
+        }
+      },
+      "patterns": {
+        "general_ru": [
+          "что запрещено",
+          "что нельзя ввозить",
+          "что нельзя вывозить",
+          "какие товары запрещены",
+          "что требует разрешения"
+        ],
+        "general_uz": [
+          "nima taqiqlangan",
+          "nima olib kirish mumkin emas",
+          "nima olib chiqish mumkin emas",
+          "qaysi tovarlar taqiqlangan",
+          "nimaga ruxsat kerak"
+        ]
+      },
+      "answer_template_ru": "{base_answer} Если хотите, напишите точный товар — я скажу, это запрет или товар с разрешительным порядком.",
+      "answer_template_uz": "{base_answer} Xohlasangiz, aniq tovarni yozing — bu taqiqmi yoki ruxsat bilan bo'ladigan tovarmi, aytaman."
+    }
+  },
+  "response_flow": {
+    "step_1": "Определи категорию вопроса: техника / лекарства / валюта / ювелирка / табак-алкоголь / запреты / общие лимиты.",
+    "step_2": "Возьми точную норму из нужного документа или блока знаний.",
+    "step_3": "Дай короткий базовый ответ простым языком.",
+    "step_4": "Если пользователь дал цену, способ въезда, вес или количество — тогда дострой ответ расчетом и правилами превышения.",
+    "step_5": "Только после этого подключай AI для уточняющих вопросов."
+  },
+  "examples": {
+    "tv_question_ru": {
+      "user": "Хочу привезти телевизор из Казахстана",
+      "answer": "Телевизор можно ввозить 1 штуку в 6 месяцев. По сумме лимит зависит от поста: аэропорт — до 1000$, авто/пешком — до 300$, ж/д и речные пункты — до 500$. Если стоимость выше лимита, на превышение может начисляться единый таможенный платеж."
+    },
+    "tv_followup_ru": {
+      "user": "Samsung 55, цена 500 долларов, пешком",
+      "answer": "Телевизор по норме можно 1 штуку в 6 месяцев. Через пешеходный пункт лимит 300$. У вас превышение 200$. На превышение применяется 30% или минимум 3$ за килограмм."
+    },
+    "phone_question_uz": {
+      "user": "Telefon olib kirsa bo'ladimi",
+      "answer": "Telefon 1 dona, 6 oyda 1 marta olib kirish mumkin. Qiymat limiti postga bog'liq: aeroport — 1000$, avto/piyoda — 300$, temir yo'l va daryo punktlari — 500$. Narx limitdan oshsa, oshgan qismiga bojxona to'lovi chiqishi mumkin."
+    }
+  }
+}
