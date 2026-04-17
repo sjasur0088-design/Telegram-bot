@@ -1,0 +1,821 @@
+{
+  "meta": {
+    "version": "pro-max-1.0",
+    "name": "physical_knowledge_pro",
+    "description": "Document-first knowledge base for physical persons. Category -> item -> rule -> follow-up.",
+    "languages": [
+      "ru",
+      "uz"
+    ]
+  },
+  "rules": {
+    "limits_usd": {
+      "airport": 1000,
+      "rail_river": 500,
+      "car": 300,
+      "foot": 300,
+      "courier": 200,
+      "post": 100
+    },
+    "duty_rule": {
+      "ru": "Если беспошлинная норма превышена, применяется единый таможенный платеж: 30% от суммы превышения, но не менее 3 долларов США за каждый килограмм.",
+      "uz": "Bepul olib kirish normasi oshsa, yagona bojxona to'lovi qo'llanadi: oshgan summaning 30 foizi, lekin har bir kilogramm uchun kamida 3 AQSh dollaridan kam emas."
+    },
+    "short_trip_rule": {
+      "ru": "Если человек въезжал через ж.д., речной, автодорожный или пешеходный пункт и находился за границей меньше 2 календарных дней, либо въезжал самолётом и находился за границей меньше 3 календарных дней, беспошлинные нормы не применяются.",
+      "uz": "Agar shaxs temir yo'l, daryo, avto yoki piyoda punkt orqali kirib, chet elda 2 kalendar kundan kam bo'lgan bo'lsa yoki samolyot orqali kirib, chet elda 3 kalendar kundan kam bo'lgan bo'lsa, bepul norma qo'llanilmaydi."
+    }
+  },
+  "crossing_aliases": {
+    "airport": [
+      "аэропорт",
+      "самолет",
+      "самолёт",
+      "самолётом",
+      "самолетом",
+      "avia",
+      "airport",
+      "plane",
+      "aviareys",
+      "aeroport"
+    ],
+    "rail_river": [
+      "поезд",
+      "поездом",
+      "жд",
+      "ж/д",
+      "железнодорожный",
+      "речной",
+      "река",
+      "train",
+      "rail",
+      "river",
+      "poezd"
+    ],
+    "car": [
+      "машина",
+      "авто",
+      "автомобиль",
+      "на машине",
+      "через машину",
+      "car",
+      "auto",
+      "mashina"
+    ],
+    "foot": [
+      "пешком",
+      "пешеходный",
+      "граница",
+      "пограничный пункт",
+      "через границу",
+      "foot",
+      "border",
+      "checkpoint",
+      "piyoda"
+    ],
+    "courier": [
+      "курьер",
+      "курьером",
+      "dhl",
+      "fedex",
+      "ups",
+      "courier",
+      "kuryer"
+    ],
+    "post": [
+      "почта",
+      "почтой",
+      "посылка",
+      "международная почта",
+      "post",
+      "mail",
+      "pochta"
+    ]
+  },
+  "categories": {
+    "electronics": {
+      "score_keywords": {
+        "ru": [
+          "телевизор",
+          "телик",
+          "smart tv",
+          "tv",
+          "телефон",
+          "айфон",
+          "смартфон",
+          "ноутбук",
+          "планшет",
+          "компьютер",
+          "принтер",
+          "холодильник",
+          "морозильник",
+          "кондиционер",
+          "стиральная машина",
+          "пылесос"
+        ],
+        "uz": [
+          "televizor",
+          "telefon",
+          "iphone",
+          "smartfon",
+          "noutbuk",
+          "planshet",
+          "kompyuter",
+          "printer",
+          "sovutgich",
+          "muzlatgich",
+          "konditsioner",
+          "kir yuvish mashinasi",
+          "chang yutgich"
+        ]
+      },
+      "default_followup": {
+        "ru": "Напишите стоимость товара и как именно вы пересекаете границу — я скажу точнее.",
+        "uz": "Tovar narxi va qaysi punkt orqali kirishingizni yozing — aniqroq aytaman."
+      },
+      "items": {
+        "tv": {
+          "aliases": {
+            "ru": [
+              "телевизор",
+              "телик",
+              "smart tv",
+              "tv"
+            ],
+            "uz": [
+              "televizor",
+              "smart tv"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Телевизор можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Televizorni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          },
+          "calc_followup": {
+            "ru": "Напишите стоимость телевизора и как именно вы пересекаете границу — я скажу, есть ли превышение.",
+            "uz": "Televizor narxi va qaysi punkt orqali kirishingizni yozing — oshish bor-yo'qligini aytaman."
+          }
+        },
+        "phone": {
+          "aliases": {
+            "ru": [
+              "телефон",
+              "айфон",
+              "iphone",
+              "смартфон",
+              "mobile",
+              "мобильный"
+            ],
+            "uz": [
+              "telefon",
+              "iphone",
+              "smartfon"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Телефон можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Telefonni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          },
+          "calc_followup": {
+            "ru": "Напишите стоимость телефона и как именно вы пересекаете границу — я скажу точнее.",
+            "uz": "Telefon narxi va qaysi punkt orqali kirishingizni yozing — aniqroq aytaman."
+          }
+        },
+        "laptop": {
+          "aliases": {
+            "ru": [
+              "ноутбук",
+              "laptop"
+            ],
+            "uz": [
+              "noutbuk",
+              "laptop"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Ноутбук можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Noutbukni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        },
+        "tablet": {
+          "aliases": {
+            "ru": [
+              "планшет",
+              "tablet"
+            ],
+            "uz": [
+              "planshet",
+              "tablet"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Планшет можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Planshetni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        },
+        "computer": {
+          "aliases": {
+            "ru": [
+              "компьютер",
+              "пк",
+              "pc"
+            ],
+            "uz": [
+              "kompyuter",
+              "pc"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Компьютерную технику можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Kompyuter texnikasini 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        },
+        "printer": {
+          "aliases": {
+            "ru": [
+              "принтер",
+              "мфу",
+              "printer"
+            ],
+            "uz": [
+              "printer",
+              "mfu"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Принтер или МФУ можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Printer yoki MFO qurilmasini 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        },
+        "fridge": {
+          "aliases": {
+            "ru": [
+              "холодильник"
+            ],
+            "uz": [
+              "sovutgich"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Холодильник можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Sovutgichni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        },
+        "freezer": {
+          "aliases": {
+            "ru": [
+              "морозильник"
+            ],
+            "uz": [
+              "muzlatgich"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Морозильник можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Muzlatgichni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        },
+        "ac": {
+          "aliases": {
+            "ru": [
+              "кондиционер"
+            ],
+            "uz": [
+              "konditsioner"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Кондиционер можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Konditsionerni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        },
+        "washing_machine": {
+          "aliases": {
+            "ru": [
+              "стиральная машина"
+            ],
+            "uz": [
+              "kir yuvish mashinasi"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Стиральную машину можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Kir yuvish mashinasini 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        },
+        "vacuum": {
+          "aliases": {
+            "ru": [
+              "пылесос"
+            ],
+            "uz": [
+              "chang yutgich"
+            ]
+          },
+          "quantity_rule": {
+            "ru": "1 штука в 6 месяцев",
+            "uz": "1 dona, 6 oyda 1 marta"
+          },
+          "base_answer": {
+            "ru": "Пылесос можно ввозить 1 штуку в 6 месяцев.",
+            "uz": "Chang yutgichni 1 dona, 6 oyda 1 marta olib kirish mumkin."
+          }
+        }
+      }
+    },
+    "medicine": {
+      "score_keywords": {
+        "ru": [
+          "лекарство",
+          "лекарства",
+          "таблетки",
+          "рецепт",
+          "цитрамон",
+          "парацетамол",
+          "ибупрофен",
+          "анальгин",
+          "антибиотик",
+          "психотропные",
+          "наркотические"
+        ],
+        "uz": [
+          "dori",
+          "dorilar",
+          "tabletka",
+          "retsept",
+          "sitramon",
+          "paratsetamol",
+          "ibuprofen",
+          "analgin",
+          "antibiotik",
+          "psixotrop",
+          "narkotik"
+        ]
+      },
+      "general_rule": {
+        "ru": "Для личного пользования обычно допускается до 10 разных лекарств и не более 5 упаковок каждого.",
+        "uz": "Shaxsiy foydalanish uchun odatda 10 xil dori va har biridan 5 qadoqqacha ruxsat etiladi."
+      },
+      "restricted_rule": {
+        "ru": "Для наркотических, психотропных препаратов и прекурсоров действует отдельный порядок и могут требоваться специальные документы.",
+        "uz": "Narkotik, psixotrop preparatlar va prekursorlar uchun alohida tartib bor va maxsus hujjatlar talab qilinishi mumkin."
+      },
+      "default_followup": {
+        "ru": "Напишите название лекарства и количество упаковок — я скажу точнее по вашей ситуации.",
+        "uz": "Dori nomi va nechta qadoq ekanini yozing — aniqroq aytaman."
+      },
+      "named_items": {
+        "citramon": {
+          "aliases": {
+            "ru": [
+              "цитрамон",
+              "citramon"
+            ],
+            "uz": [
+              "sitramon",
+              "citramon"
+            ]
+          },
+          "base_answer": {
+            "ru": "Цитрамон обычно относится к обычным лекарствам для личного пользования и обычно не считается наркотическим или психотропным препаратом.",
+            "uz": "Sitramon odatda shaxsiy foydalanish uchun oddiy dori hisoblanadi va odatda narkotik yoki psixotrop toifaga kirmaydi."
+          }
+        },
+        "paracetamol": {
+          "aliases": {
+            "ru": [
+              "парацетамол",
+              "paracetamol"
+            ],
+            "uz": [
+              "paratsetamol",
+              "paracetamol"
+            ]
+          },
+          "base_answer": {
+            "ru": "Парацетамол обычно относится к обычным лекарствам для личного пользования и обычно не считается наркотическим или психотропным препаратом.",
+            "uz": "Paratsetamol odatda shaxsiy foydalanish uchun oddiy dori hisoblanadi va odatda narkotik yoki psixotrop toifaga kirmaydi."
+          }
+        },
+        "ibuprofen": {
+          "aliases": {
+            "ru": [
+              "ибупрофен",
+              "ibuprofen"
+            ],
+            "uz": [
+              "ibuprofen"
+            ]
+          },
+          "base_answer": {
+            "ru": "Ибупрофен обычно относится к обычным лекарствам для личного пользования и обычно не считается наркотическим или психотропным препаратом.",
+            "uz": "Ibuprofen odatda shaxsiy foydalanish uchun oddiy dori hisoblanadi va odatda narkotik yoki psixotrop toifaga kirmaydi."
+          }
+        },
+        "analgin": {
+          "aliases": {
+            "ru": [
+              "анальгин",
+              "analgin"
+            ],
+            "uz": [
+              "analgin"
+            ]
+          },
+          "base_answer": {
+            "ru": "Анальгин обычно относится к обычным лекарствам для личного пользования и обычно не считается наркотическим или психотропным препаратом.",
+            "uz": "Analgin odatda shaxsiy foydalanish uchun oddiy dori hisoblanadi va odatda narkotik yoki psixotrop toifaga kirmaydi."
+          }
+        },
+        "antibiotic": {
+          "aliases": {
+            "ru": [
+              "антибиотик",
+              "антибиотики",
+              "antibiotic"
+            ],
+            "uz": [
+              "antibiotik",
+              "antibiotic"
+            ]
+          },
+          "base_answer": {
+            "ru": "Антибиотики в разумном количестве обычно рассматриваются как обычные лекарства, но важно учитывать название препарата, количество упаковок и наличие рецепта.",
+            "uz": "Antibiotiklar me'yoriy miqdorda odatda oddiy dori sifatida ko'riladi, lekin dori nomi, qadoq soni va retsept borligi muhim."
+          }
+        }
+      }
+    },
+    "currency": {
+      "score_keywords": {
+        "ru": [
+          "валюта",
+          "доллар",
+          "евро",
+          "наличные",
+          "деньги",
+          "usd",
+          "eur"
+        ],
+        "uz": [
+          "valyuta",
+          "dollar",
+          "yevro",
+          "naqd",
+          "pul",
+          "usd",
+          "eur"
+        ]
+      },
+      "general_rule": {
+        "ru": "Ввоз наличной валюты для физлиц обычно не ограничен по сумме. Вывоз наличной валюты разрешён в пределах эквивалента 100 000 000 сумов, а при сумме выше этого порога нужен установленный порядок и документы.",
+        "uz": "Jismoniy shaxslar uchun naqd valyutani olib kirishda odatda cheklov yo'q. Olib chiqish 100 000 000 so'm ekvivalentigacha ruxsat etiladi, undan yuqori summa uchun alohida tartib va hujjatlar kerak bo'lishi mumkin."
+      },
+      "default_followup": {
+        "ru": "Напишите валюту и сумму — я скажу точнее.",
+        "uz": "Valyuta turi va summani yozing — aniqroq aytaman."
+      }
+    },
+    "tobacco_alcohol": {
+      "score_keywords": {
+        "ru": [
+          "сигареты",
+          "сигары",
+          "табак",
+          "алкоголь",
+          "пиво",
+          "виски",
+          "водка",
+          "вино"
+        ],
+        "uz": [
+          "sigaret",
+          "sigara",
+          "tamaki",
+          "alkogol",
+          "pivo",
+          "viski",
+          "aroq",
+          "vino"
+        ]
+      },
+      "general_rule": {
+        "ru": "Для личного пользования обычно допускается: алкоголь — до 2 литров, сигареты — до 200 штук, сигары — до 5 штук, табак — до 100 граммов. Эти нормы проверяются вместе с общим лимитом по стоимости.",
+        "uz": "Shaxsiy foydalanish uchun odatda: alkogol — 2 litrgacha, sigaret — 200 donagacha, sigara — 5 donagacha, tamaki — 100 grammgacha ruxsat etiladi. Bu me'yorlar umumiy qiymat limiti bilan birga ko'riladi."
+      },
+      "default_followup": {
+        "ru": "Напишите точное количество и как именно вы пересекаете границу.",
+        "uz": "Aniq miqdor va qaysi punkt orqali kirishingizni yozing."
+      }
+    },
+    "jewelry": {
+      "score_keywords": {
+        "ru": [
+          "золото",
+          "ювелирные изделия",
+          "кольцо",
+          "цепочка",
+          "серьги",
+          "браслет"
+        ],
+        "uz": [
+          "tilla",
+          "zargarlik",
+          "uzuk",
+          "zanjir",
+          "zirak",
+          "braslet"
+        ]
+      },
+      "general_rule": {
+        "ru": "Ювелирные изделия для личного пользования оцениваются по стоимости, количеству и признакам некоммерческого характера. Если изделий немного и это не похоже на товарную партию, вопрос обычно рассматривается как личное пользование.",
+        "uz": "Shaxsiy foydalanish uchun zargarlik buyumlari qiymati, soni va tijorat alomatlari yo'qligiga qarab baholanadi. Buyumlar kam bo'lsa va tovar partiyasiga o'xshamasa, odatda shaxsiy foydalanish sifatida ko'riladi."
+      },
+      "default_followup": {
+        "ru": "Напишите, что именно вы везёте, сколько штук и какова примерная стоимость.",
+        "uz": "Nima olib kirayotganingizni, nechta dona va taxminiy qiymatini yozing."
+      }
+    },
+    "forbidden": {
+      "score_keywords": {
+        "ru": [
+          "дрон",
+          "квадрокоптер",
+          "беспилотник",
+          "пиротехника",
+          "салют",
+          "фейерверк",
+          "петарда",
+          "оружие",
+          "патроны",
+          "наркотики",
+          "психотропные",
+          "прекурсоры"
+        ],
+        "uz": [
+          "dron",
+          "kvadrokopter",
+          "bepilot",
+          "pirotekhnika",
+          "salyut",
+          "feyerverk",
+          "petarda",
+          "qurol",
+          "patron",
+          "narkotik",
+          "psixotrop",
+          "prekursor"
+        ]
+      },
+      "items": {
+        "drone": {
+          "aliases": {
+            "ru": [
+              "дрон",
+              "квадрокоптер",
+              "беспилотник"
+            ],
+            "uz": [
+              "dron",
+              "kvadrokopter",
+              "bepilot"
+            ]
+          },
+          "answer": {
+            "ru": "Дроны относятся к товарам со строгим порядком. Их нельзя рассматривать как обычный товар для личного пользования без отдельного разрешительного режима.",
+            "uz": "Dronlar qat'iy tartibdagi tovarlarga kiradi. Ularni alohida ruxsat tartibisiz oddiy shaxsiy tovar sifatida ko'rib bo'lmaydi."
+          }
+        },
+        "pyro": {
+          "aliases": {
+            "ru": [
+              "пиротехника",
+              "салют",
+              "фейерверк",
+              "петарда"
+            ],
+            "uz": [
+              "pirotekhnika",
+              "salyut",
+              "feyerverk",
+              "petarda"
+            ]
+          },
+          "answer": {
+            "ru": "Пиротехника относится к товарам с ограничением. Её нельзя ввозить или вывозить как обычный личный товар без отдельного разрешительного порядка.",
+            "uz": "Pirotexnika cheklangan tovarlarga kiradi. Uni alohida ruxsat tartibisiz oddiy shaxsiy tovar sifatida olib kirish yoki olib chiqish mumkin emas."
+          }
+        }
+      },
+      "default_followup": {
+        "ru": "Если речь о конкретном товаре, напишите его точное название.",
+        "uz": "Agar aniq tovar haqida bo'lsa, uning to'liq nomini yozing."
+      }
+    },
+    "auto": {
+      "score_keywords": {
+        "ru": [
+          "машина",
+          "автомобиль",
+          "авто",
+          "временный ввоз авто",
+          "временный вывоз авто"
+        ],
+        "uz": [
+          "mashina",
+          "avtomobil",
+          "avto",
+          "avto vaqtincha olib kirish",
+          "avto vaqtincha olib chiqish"
+        ]
+      },
+      "general_rule": {
+        "ru": "По автомобилям для физлиц действует отдельный порядок. Для точного ответа важно знать: это ввоз или вывоз, временно или постоянно, чьё авто и на какой срок.",
+        "uz": "Avtomobillar bo'yicha jismoniy shaxslar uchun alohida tartib bor. Aniq javob uchun bu olib kirishmi yoki olib chiqishmi, vaqtinchalikmi yoki doimiymi, mashina kimniki va qancha muddatga ekanini bilish kerak."
+      },
+      "default_followup": {
+        "ru": "Напишите: временный ввоз или вывоз, чьё авто и на какой срок.",
+        "uz": "Yozing: vaqtincha olib kirishmi yoki olib chiqishmi, mashina kimniki va qancha muddatga."
+      }
+    },
+    "general_limits": {
+      "score_keywords": {
+        "ru": [
+          "сколько можно ввезти",
+          "лимит ввоза",
+          "через аэропорт сколько можно",
+          "через машину сколько можно",
+          "пешком сколько можно",
+          "через поезд сколько можно",
+          "какая пошлина",
+          "если выше нормы"
+        ],
+        "uz": [
+          "qancha olib kirish mumkin",
+          "limit",
+          "aeroport orqali qancha",
+          "mashinada qancha",
+          "piyoda qancha",
+          "poezd orqali qancha",
+          "boj qancha"
+        ]
+      },
+      "general_rule": {
+        "ru": "Для физлиц лимит зависит от способа въезда: аэропорт — до 1000$, ж/д и речные пункты — до 500$, авто и пешком — до 300$, международный курьер — до 200$, международная почта — до 100$. Если норма превышена, применяется единый таможенный платеж: 30% от суммы превышения, но не менее 3$ за каждый килограмм.",
+        "uz": "Jismoniy shaxslar uchun limit kirish usuliga bog'liq: aeroport — 1000$, temir yo'l va daryo punktlari — 500$, avto va piyoda — 300$, xalqaro kuryer — 200$, xalqaro pochta — 100$. Limit oshsa, yagona bojxona to'lovi qo'llanadi: oshgan summaning 30 foizi, lekin har kilogramm uchun kamida 3$."
+      },
+      "default_followup": {
+        "ru": "Напишите товар и стоимость — я скажу точнее.",
+        "uz": "Tovar nomi va narxini yozing — aniqroq aytaman."
+      }
+    }
+  },
+  "intent_markers": {
+    "basic_permission": {
+      "ru": [
+        "можно",
+        "можно ли",
+        "хочу привезти",
+        "хочу ввезти",
+        "везу",
+        "привезти"
+      ],
+      "uz": [
+        "mumkinmi",
+        "olib kirsa bo'ladimi",
+        "olib kelsam bo'ladimi",
+        "olib kirish mumkinmi"
+      ]
+    },
+    "quantity_limit": {
+      "ru": [
+        "сколько можно",
+        "сколько штук",
+        "какой лимит",
+        "норма"
+      ],
+      "uz": [
+        "qancha mumkin",
+        "nechta mumkin",
+        "limit",
+        "me'yor"
+      ]
+    },
+    "calculation": {
+      "ru": [
+        "доллар",
+        "$",
+        "usd",
+        "евро",
+        "eur",
+        "килограмм",
+        "кг",
+        "весит",
+        "стоит"
+      ],
+      "uz": [
+        "dollar",
+        "$",
+        "usd",
+        "yevro",
+        "eur",
+        "kilogramm",
+        "kg",
+        "narxi",
+        "turadi"
+      ]
+    },
+    "over_limit": {
+      "ru": [
+        "если выше нормы",
+        "если превышение",
+        "какая пошлина",
+        "30 процентов",
+        "3 доллара за килограмм"
+      ],
+      "uz": [
+        "limit oshsa",
+        "oshib ketsa",
+        "boj qancha",
+        "30 foiz",
+        "3 dollar kilogramm"
+      ]
+    },
+    "commercial_risk": {
+      "ru": [
+        "2 телефона",
+        "3 телефона",
+        "несколько телефонов",
+        "много",
+        "партия",
+        "на продажу"
+      ],
+      "uz": [
+        "2 telefon",
+        "3 telefon",
+        "bir nechta",
+        "ko'p",
+        "partiya",
+        "sotish uchun"
+      ]
+    },
+    "followup_clarification": {
+      "ru": [
+        "пешком",
+        "аэропорт",
+        "поездом",
+        "600 долларов",
+        "4 упаковки",
+        "есть рецепт"
+      ],
+      "uz": [
+        "piyoda",
+        "aeroport",
+        "poezd",
+        "600 dollar",
+        "4 qadoq",
+        "retsept bor"
+      ]
+    }
+  }
+}
