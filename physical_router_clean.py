@@ -29,7 +29,7 @@ class PhysicalRouter:
         }
         for old, new in replacements.items():
             t = t.replace(old, new)
-        t = re.sub(r"[,;
+        t = re.sub(r"[,;\n\t]+", " ", t)
 	]+", " ", t)
         t = re.sub(r"\s+", " ", t).strip()
         return t
